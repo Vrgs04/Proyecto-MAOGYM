@@ -15,25 +15,35 @@
       <div class="brand">MAO Gym</div>
       <nav>
         <ul class="menu">
-          <li class="menu__item menu__item--active">
-            <span class="menu__icon">📊</span>
-            <span>Dashboard</span>
+          <li>
+            <a class="menu__item menu__item--active" href="#dashboard" data-target="dashboard">
+              <span class="menu__icon">📊</span>
+              <span>Dashboard</span>
+            </a>
           </li>
-          <li class="menu__item">
-            <span class="menu__icon">💪</span>
-            <span>Entrenamientos</span>
+          <li>
+            <a class="menu__item" href="#entrenamientos" data-target="entrenamientos">
+              <span class="menu__icon">💪</span>
+              <span>Entrenamientos</span>
+            </a>
           </li>
-          <li class="menu__item">
-            <span class="menu__icon">🧘‍♀️</span>
-            <span>Clases</span>
+          <li>
+            <a class="menu__item" href="#clases" data-target="clases">
+              <span class="menu__icon">🧘‍♀️</span>
+              <span>Clases</span>
+            </a>
           </li>
-          <li class="menu__item">
-            <span class="menu__icon">👥</span>
-            <span>Miembros</span>
+          <li>
+            <a class="menu__item" href="#miembros" data-target="miembros">
+              <span class="menu__icon">👥</span>
+              <span>Miembros</span>
+            </a>
           </li>
-          <li class="menu__item">
-            <span class="menu__icon">⚙️</span>
-            <span>Ajustes</span>
+          <li>
+            <a class="menu__item" href="#ajustes" data-target="ajustes">
+              <span class="menu__icon">⚙️</span>
+              <span>Ajustes</span>
+            </a>
           </li>
         </ul>
       </nav>
@@ -41,61 +51,63 @@
     </aside>
 
     <main class="content">
-      <header class="content__header">
-        <div>
-          <p class="breadcrumb">Inicio / Dashboard</p>
-          <h1>Panel general</h1>
-        </div>
-        <div class="actions">
-          <button class="btn btn--ghost">Exportar</button>
-          <button class="btn">Nuevo reporte</button>
-        </div>
-      </header>
-
-      <section class="cards" aria-label="Resumen de métricas">
-        <article class="card">
-          <div class="card__label">Miembros activos</div>
-          <div class="card__value">324</div>
-          <div class="card__delta card__delta--positive">+8% vs semana pasada</div>
-        </article>
-        <article class="card">
-          <div class="card__label">Reservas de clase</div>
-          <div class="card__value">142</div>
-          <div class="card__delta">+3 nuevas hoy</div>
-        </article>
-        <article class="card">
-          <div class="card__label">Ingresos mensuales</div>
-          <div class="card__value">$12,430</div>
-          <div class="card__delta card__delta--positive">+12% crecimiento</div>
-        </article>
-      </section>
-
-      <section class="grid" aria-label="Detalles del dashboard">
-        <article class="panel">
-          <header class="panel__header">
-            <h2>Asistencia semanal</h2>
-            <span class="pill">Últimos 7 días</span>
-          </header>
-          <div class="progress">
-            <div class="progress__bar" style="width: 78%"></div>
+      <section id="dashboard" class="section" data-section="dashboard" aria-label="Dashboard">
+        <header class="content__header">
+          <div>
+            <p class="breadcrumb">Inicio / Dashboard</p>
+            <h1>Panel general</h1>
           </div>
-          <p class="panel__meta">78% de ocupación promedio en todas las clases.</p>
-        </article>
+          <div class="actions">
+            <button class="btn btn--ghost">Exportar</button>
+            <button class="btn">Nuevo reporte</button>
+          </div>
+        </header>
 
-        <article class="panel">
-          <header class="panel__header">
-            <h2>Tareas rápidas</h2>
-          </header>
-          <ul class="tasks">
-            <li><input type="checkbox" id="t1" checked><label for="t1">Confirmar agenda de entrenadores</label></li>
-            <li><input type="checkbox" id="t2"><label for="t2">Enviar recordatorios a miembros inactivos</label></li>
-            <li><input type="checkbox" id="t3"><label for="t3">Actualizar horario de clases</label></li>
-          </ul>
-          <button class="btn btn--ghost btn--full">Ver todas las tareas</button>
-        </article>
+        <div class="cards" aria-label="Resumen de métricas">
+          <article class="card">
+            <div class="card__label">Miembros activos</div>
+            <div class="card__value">324</div>
+            <div class="card__delta card__delta--positive">+8% vs semana pasada</div>
+          </article>
+          <article class="card">
+            <div class="card__label">Reservas de clase</div>
+            <div class="card__value">142</div>
+            <div class="card__delta">+3 nuevas hoy</div>
+          </article>
+          <article class="card">
+            <div class="card__label">Ingresos mensuales</div>
+            <div class="card__value">$12,430</div>
+            <div class="card__delta card__delta--positive">+12% crecimiento</div>
+          </article>
+        </div>
+
+        <div class="grid" aria-label="Detalles del dashboard">
+          <article class="panel">
+            <header class="panel__header">
+              <h2>Asistencia semanal</h2>
+              <span class="pill">Últimos 7 días</span>
+            </header>
+            <div class="progress">
+              <div class="progress__bar" style="width: 78%"></div>
+            </div>
+            <p class="panel__meta">78% de ocupación promedio en todas las clases.</p>
+          </article>
+
+          <article class="panel">
+            <header class="panel__header">
+              <h2>Tareas rápidas</h2>
+            </header>
+            <ul class="tasks">
+              <li><input type="checkbox" id="t1" checked><label for="t1">Confirmar agenda de entrenadores</label></li>
+              <li><input type="checkbox" id="t2"><label for="t2">Enviar recordatorios a miembros inactivos</label></li>
+              <li><input type="checkbox" id="t3"><label for="t3">Actualizar horario de clases</label></li>
+            </ul>
+            <button class="btn btn--ghost btn--full">Ver todas las tareas</button>
+          </article>
+        </div>
       </section>
 
-      <section class="training" aria-label="Entrenamientos">
+      <section id="entrenamientos" class="training section" data-section="entrenamientos" aria-label="Entrenamientos">
         <header class="training__header">
           <div>
             <p class="breadcrumb">Inicio / Entrenamientos</p>
@@ -232,6 +244,210 @@
               <span class="pill">Abierto</span>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section id="clases" class="section" data-section="clases" aria-label="Clases">
+        <header class="section__header">
+          <div>
+            <p class="breadcrumb">Inicio / Clases</p>
+            <h2>Agenda de clases</h2>
+          </div>
+          <div class="chips" role="list" aria-label="Filtros de clases">
+            <button class="chip chip--active" role="listitem">Hoy</button>
+            <button class="chip" role="listitem">Semana</button>
+            <button class="chip" role="listitem">Virtuales</button>
+          </div>
+        </header>
+        <div class="section__grid">
+          <article class="panel panel--lifted">
+            <header class="panel__header">
+              <div>
+                <p class="training__label">07:30 · Zona cardio</p>
+                <h3>Cardio burn</h3>
+              </div>
+              <span class="pill pill--accent">12/18</span>
+            </header>
+            <p class="panel__meta">Intervalos progresivos con énfasis en respiración y control.</p>
+            <div class="progress progress--thin" aria-label="Ocupación de clase">
+              <div class="progress__bar" style="width: 64%"></div>
+            </div>
+            <div class="panel__footer">
+              <button class="btn btn--ghost">Ver plan</button>
+              <button class="btn">Reservar</button>
+            </div>
+          </article>
+
+          <article class="panel panel--lifted">
+            <header class="panel__header">
+              <div>
+                <p class="training__label">12:00 · Estudio 2</p>
+                <h3>Flow de movilidad</h3>
+              </div>
+              <span class="pill">Abierta</span>
+            </header>
+            <p class="panel__meta">Secuencias de movilidad y respiración para activar energía.</p>
+            <div class="progress progress--thin" aria-label="Ocupación de clase">
+              <div class="progress__bar progress__bar--secondary" style="width: 38%"></div>
+            </div>
+            <div class="panel__footer">
+              <button class="btn btn--ghost">Agregar a agenda</button>
+              <button class="btn">Unirme</button>
+            </div>
+          </article>
+
+          <article class="panel panel--lifted">
+            <header class="panel__header">
+              <div>
+                <p class="training__label">18:00 · Sala principal</p>
+                <h3>Funcional mixto</h3>
+              </div>
+              <span class="pill">Completa</span>
+            </header>
+            <p class="panel__meta">Circuito de fuerza y estabilidad con estaciones rotativas.</p>
+            <div class="progress progress--thin" aria-label="Ocupación de clase">
+              <div class="progress__bar" style="width: 95%"></div>
+            </div>
+            <div class="panel__footer">
+              <button class="btn btn--ghost">Ver lista</button>
+              <button class="btn" disabled>En espera</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="miembros" class="section section--two-cols" data-section="miembros" aria-label="Miembros">
+        <header class="section__header">
+          <div>
+            <p class="breadcrumb">Inicio / Miembros</p>
+            <h2>Miembros activos</h2>
+          </div>
+          <button class="btn btn--ghost">Ver todos</button>
+        </header>
+
+        <div class="section__grid section__grid--two">
+          <article class="panel">
+            <header class="panel__header">
+              <h3>Retención</h3>
+              <span class="pill">92%</span>
+            </header>
+            <p class="panel__meta">Miembros con asistencia de 2+ veces por semana.</p>
+            <div class="progress" aria-label="Retención semanal">
+              <div class="progress__bar progress__bar--secondary" style="width: 92%"></div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <header class="panel__header">
+              <h3>Nuevos ingresos</h3>
+              <span class="pill pill--accent">+18 este mes</span>
+            </header>
+            <p class="panel__meta">Altas recientes con seguimiento personalizado.</p>
+            <div class="list">
+              <div class="list__item">
+                <div>
+                  <p class="list__title">Araceli R.</p>
+                  <p class="list__meta">HIIT · Semana 2</p>
+                </div>
+                <span class="pill">Activa</span>
+              </div>
+              <div class="list__item">
+                <div>
+                  <p class="list__title">Samuel V.</p>
+                  <p class="list__meta">Power Lifting · Semana 1</p>
+                </div>
+                <span class="pill pill--accent">Seguimiento</span>
+              </div>
+              <div class="list__item">
+                <div>
+                  <p class="list__title">Patricia M.</p>
+                  <p class="list__meta">Funcional · Semana 3</p>
+                </div>
+                <span class="pill">Activa</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="ajustes" class="section" data-section="ajustes" aria-label="Ajustes">
+        <header class="section__header">
+          <div>
+            <p class="breadcrumb">Inicio / Ajustes</p>
+            <h2>Preferencias rápidas</h2>
+          </div>
+          <button class="btn btn--ghost">Guardar cambios</button>
+        </header>
+
+        <div class="section__grid">
+          <article class="panel panel--lifted">
+            <header class="panel__header">
+              <h3>Notificaciones</h3>
+              <span class="pill">Activas</span>
+            </header>
+            <ul class="list list--plain">
+              <li class="list__item">
+                <div>
+                  <p class="list__title">Alertas de cupo</p>
+                  <p class="list__meta">Recibe avisos cuando queden menos de 5 espacios.</p>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" checked>
+                  <span class="slider"></span>
+                </label>
+              </li>
+              <li class="list__item">
+                <div>
+                  <p class="list__title">Resumen semanal</p>
+                  <p class="list__meta">Estadísticas directas al correo los domingos.</p>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" checked>
+                  <span class="slider"></span>
+                </label>
+              </li>
+              <li class="list__item">
+                <div>
+                  <p class="list__title">Recordatorios de pago</p>
+                  <p class="list__meta">Enviar 3 días antes del vencimiento.</p>
+                </div>
+                <label class="switch">
+                  <input type="checkbox">
+                  <span class="slider"></span>
+                </label>
+              </li>
+            </ul>
+          </article>
+
+          <article class="panel panel--lifted">
+            <header class="panel__header">
+              <h3>Preferencias de tema</h3>
+              <span class="pill pill--accent">Auto</span>
+            </header>
+            <div class="list list--plain">
+              <label class="list__item list__item--selectable">
+                <div>
+                  <p class="list__title">Modo oscuro</p>
+                  <p class="list__meta">Optimizado para uso nocturno.</p>
+                </div>
+                <input type="radio" name="theme" checked>
+              </label>
+              <label class="list__item list__item--selectable">
+                <div>
+                  <p class="list__title">Modo claro</p>
+                  <p class="list__meta">Ideal para ambientes bien iluminados.</p>
+                </div>
+                <input type="radio" name="theme">
+              </label>
+              <label class="list__item list__item--selectable">
+                <div>
+                  <p class="list__title">Automático</p>
+                  <p class="list__meta">Ajuste según hora y sistema.</p>
+                </div>
+                <input type="radio" name="theme">
+              </label>
+            </div>
+          </article>
         </div>
       </section>
     </main>
