@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAO Gym | Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar" aria-label="Menú principal">
+      <div class="brand">MAO Gym</div>
+      <nav>
+        <ul class="menu">
+          <li class="menu__item menu__item--active">
+            <span class="menu__icon">📊</span>
+            <span>Dashboard</span>
+          </li>
+          <li class="menu__item">
+            <span class="menu__icon">💪</span>
+            <span>Entrenamientos</span>
+          </li>
+          <li class="menu__item">
+            <span class="menu__icon">🧘‍♀️</span>
+            <span>Clases</span>
+          </li>
+          <li class="menu__item">
+            <span class="menu__icon">👥</span>
+            <span>Miembros</span>
+          </li>
+          <li class="menu__item">
+            <span class="menu__icon">⚙️</span>
+            <span>Ajustes</span>
+          </li>
+        </ul>
+      </nav>
+      <button class="sidebar__toggle" type="button" aria-label="Contraer menú">☰</button>
+    </aside>
+
+    <main class="content">
+      <header class="content__header">
+        <div>
+          <p class="breadcrumb">Inicio / Dashboard</p>
+          <h1>Panel general</h1>
+        </div>
+        <div class="actions">
+          <button class="btn btn--ghost">Exportar</button>
+          <button class="btn">Nuevo reporte</button>
+        </div>
+      </header>
+
+      <section class="cards" aria-label="Resumen de métricas">
+        <article class="card">
+          <div class="card__label">Miembros activos</div>
+          <div class="card__value">324</div>
+          <div class="card__delta card__delta--positive">+8% vs semana pasada</div>
+        </article>
+        <article class="card">
+          <div class="card__label">Reservas de clase</div>
+          <div class="card__value">142</div>
+          <div class="card__delta">+3 nuevas hoy</div>
+        </article>
+        <article class="card">
+          <div class="card__label">Ingresos mensuales</div>
+          <div class="card__value">$12,430</div>
+          <div class="card__delta card__delta--positive">+12% crecimiento</div>
+        </article>
+      </section>
+
+      <section class="grid" aria-label="Detalles del dashboard">
+        <article class="panel">
+          <header class="panel__header">
+            <h2>Asistencia semanal</h2>
+            <span class="pill">Últimos 7 días</span>
+          </header>
+          <div class="progress">
+            <div class="progress__bar" style="width: 78%"></div>
+          </div>
+          <p class="panel__meta">78% de ocupación promedio en todas las clases.</p>
+        </article>
+
+        <article class="panel">
+          <header class="panel__header">
+            <h2>Tareas rápidas</h2>
+          </header>
+          <ul class="tasks">
+            <li><input type="checkbox" id="t1" checked><label for="t1">Confirmar agenda de entrenadores</label></li>
+            <li><input type="checkbox" id="t2"><label for="t2">Enviar recordatorios a miembros inactivos</label></li>
+            <li><input type="checkbox" id="t3"><label for="t3">Actualizar horario de clases</label></li>
+          </ul>
+          <button class="btn btn--ghost btn--full">Ver todas las tareas</button>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
