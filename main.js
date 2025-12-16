@@ -37,7 +37,7 @@ const products = [
     tags: ['postres'],
     vendor: {
       name: 'Panadería París',
-      avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=200&q=80',
+      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
       contact: 'ventas@paris.com'
     }
   },
@@ -53,6 +53,58 @@ const products = [
       avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
       contact: '+57 311 444 5566'
     }
+  },
+  {
+    id: 'p5',
+    title: 'Cold brew con cacao',
+    price: 5.5,
+    description: 'Infusión lenta con notas de cacao y naranja.',
+    image: 'https://images.unsplash.com/photo-1481391194949-4d63c38778aa?auto=format&fit=crop&w=800&q=80',
+    tags: ['bebidas', 'vegano'],
+    vendor: {
+      name: 'Café Bruma',
+      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
+      contact: 'cafe@bruma.co'
+    }
+  },
+  {
+    id: 'p6',
+    title: 'Tacos de birria lenta',
+    price: 13.0,
+    description: 'Estofado de res con especias, tortillas hechas a mano.',
+    image: 'https://images.unsplash.com/photo-1608039858984-738af0cfa55b?auto=format&fit=crop&w=800&q=80',
+    tags: ['rapida'],
+    vendor: {
+      name: 'Sazón Norte',
+      avatar: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=200&q=80',
+      contact: 'wa.me/573154445566'
+    }
+  },
+  {
+    id: 'p7',
+    title: 'Bao de portobello glaseado',
+    price: 11.0,
+    description: 'Hongos caramelizados, pepino encurtido y mayonesa de miso.',
+    image: 'https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?auto=format&fit=crop&w=800&q=80',
+    tags: ['vegano', 'gourmet'],
+    vendor: {
+      name: 'Nube Umami',
+      avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80',
+      contact: 'hola@nubeumami.com'
+    }
+  },
+  {
+    id: 'p8',
+    title: 'Cheesecake de maracuyá',
+    price: 8.25,
+    description: 'Base de galleta con topping cítrico y cremoso.',
+    image: 'https://images.unsplash.com/photo-1475856033578-76b4a180a6a5?auto=format&fit=crop&w=800&q=80',
+    tags: ['postres', 'gourmet'],
+    vendor: {
+      name: 'Dulce Búho',
+      avatar: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=200&q=80',
+      contact: 'pasteles@dulcebuho.com'
+    }
   }
 ];
 
@@ -67,9 +119,44 @@ const vendors = [
   {
     id: 'u4',
     name: 'Panadería París',
-    avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=200&q=80',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
     bio: 'Pan artesanal y repostería',
     contact: 'ventas@paris.com'
+  },
+  {
+    id: 'u5',
+    name: 'Huerta Verde',
+    avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80',
+    bio: 'Canastas orgánicas con cosecha local',
+    contact: '+57 311 444 5566'
+  },
+  {
+    id: 'u6',
+    name: 'Café Bruma',
+    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
+    bio: 'Bebidas frías y métodos filtrados',
+    contact: 'cafe@bruma.co'
+  },
+  {
+    id: 'u7',
+    name: 'Sazón Norte',
+    avatar: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=200&q=80',
+    bio: 'Tacos y antojitos del norte',
+    contact: 'wa.me/573154445566'
+  },
+  {
+    id: 'u8',
+    name: 'Nube Umami',
+    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80',
+    bio: 'Fusión asiática con verduras de temporada',
+    contact: 'hola@nubeumami.com'
+  },
+  {
+    id: 'u9',
+    name: 'Dulce Búho',
+    avatar: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=200&q=80',
+    bio: 'Postres cremosos y pastelería moderna',
+    contact: 'pasteles@dulcebuho.com'
   }
 ];
 

@@ -53,6 +53,61 @@ let users = [
     bio: 'Amante de la buena comida',
     contact: 'carlos@example.com',
     active: true
+  },
+  {
+    id: 'u4',
+    name: 'Huerta Verde',
+    email: 'huerta@demo.com',
+    role: 'vendedor',
+    passwordHash: bcrypt.hashSync('Vendedor123!', 10),
+    avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80',
+    bio: 'Canastas orgánicas con cosecha local',
+    contact: '+57 311 444 5566',
+    active: true
+  },
+  {
+    id: 'u5',
+    name: 'Café Bruma',
+    email: 'bruma@demo.com',
+    role: 'vendedor',
+    passwordHash: bcrypt.hashSync('Vendedor123!', 10),
+    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
+    bio: 'Bebidas frías y métodos filtrados',
+    contact: 'cafe@bruma.co',
+    active: true
+  },
+  {
+    id: 'u6',
+    name: 'Sazón Norte',
+    email: 'sazon@demo.com',
+    role: 'vendedor',
+    passwordHash: bcrypt.hashSync('Vendedor123!', 10),
+    avatar: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=200&q=80',
+    bio: 'Tacos y antojitos del norte',
+    contact: 'wa.me/573154445566',
+    active: true
+  },
+  {
+    id: 'u7',
+    name: 'Nube Umami',
+    email: 'umami@demo.com',
+    role: 'vendedor',
+    passwordHash: bcrypt.hashSync('Vendedor123!', 10),
+    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80',
+    bio: 'Fusión asiática con verduras de temporada',
+    contact: 'hola@nubeumami.com',
+    active: true
+  },
+  {
+    id: 'u8',
+    name: 'Dulce Búho',
+    email: 'dulce@demo.com',
+    role: 'vendedor',
+    passwordHash: bcrypt.hashSync('Vendedor123!', 10),
+    avatar: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=200&q=80',
+    bio: 'Postres cremosos y pastelería moderna',
+    contact: 'pasteles@dulcebuho.com',
+    active: true
   }
 ];
 
@@ -73,6 +128,51 @@ let products = [
     description: 'Pan brioche, carne angus y salsas caseras.',
     image: 'https://images.unsplash.com/photo-1499028344343-cd173ffc68a9?auto=format&fit=crop&w=800&q=80',
     vendorId: 'u2',
+    active: true
+  },
+  {
+    id: 'p3',
+    title: 'Box de frutas orgánicas',
+    price: 15.0,
+    description: 'Selección semanal de frutas de temporada.',
+    image: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=80',
+    vendorId: 'u4',
+    active: true
+  },
+  {
+    id: 'p4',
+    title: 'Cold brew con cacao',
+    price: 5.5,
+    description: 'Infusión lenta con notas de cacao y naranja.',
+    image: 'https://images.unsplash.com/photo-1481391194949-4d63c38778aa?auto=format&fit=crop&w=800&q=80',
+    vendorId: 'u5',
+    active: true
+  },
+  {
+    id: 'p5',
+    title: 'Tacos de birria lenta',
+    price: 13.0,
+    description: 'Estofado de res con especias, tortillas hechas a mano.',
+    image: 'https://images.unsplash.com/photo-1608039858984-738af0cfa55b?auto=format&fit=crop&w=800&q=80',
+    vendorId: 'u6',
+    active: true
+  },
+  {
+    id: 'p6',
+    title: 'Bao de portobello glaseado',
+    price: 11.0,
+    description: 'Hongos caramelizados, pepino encurtido y mayonesa de miso.',
+    image: 'https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?auto=format&fit=crop&w=800&q=80',
+    vendorId: 'u7',
+    active: true
+  },
+  {
+    id: 'p7',
+    title: 'Cheesecake de maracuyá',
+    price: 8.25,
+    description: 'Base de galleta con topping cítrico y cremoso.',
+    image: 'https://images.unsplash.com/photo-1475856033578-76b4a180a6a5?auto=format&fit=crop&w=800&q=80',
+    vendorId: 'u8',
     active: true
   }
 ];
