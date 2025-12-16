@@ -178,6 +178,13 @@ let currentFilter = 'all';
 let session = { token: null, user: null };
 let activeChatWith = null;
 
+// Permite apuntar a otra API si el HTML se abre como archivo local o desde otro puerto
+// Usa window.__PHASVY_API__ para sobreescribir manualmente el endpoint
+const API_BASE =
+  window.__PHASVY_API__ ||
+  (window.location.protocol === 'file:' ? 'http://localhost:4000' : '') ||
+  '';
+
 const sessionStatus = document.getElementById('session-status');
 const notificationList = document.getElementById('notification-list');
 const notificationBadge = document.querySelector('[data-notification-badge]');
@@ -186,6 +193,25 @@ const chatMessages = document.getElementById('chat-messages');
 const chatForm = document.getElementById('chat-form');
 const chatText = document.getElementById('chat-text');
 const demoLoginButtons = document.querySelectorAll('[data-demo-login]');
+
+const persistSession = () => {
+  if (session?.token && session?.user) {
+    localStorage.setItem('phasvy_session', JSON.stringify(session));
+  } else {
+    localStorage.removeItem('phasvy_session');
+  }
+};
+
+const restoreSession = () => {
+  const stored = localStorage.getItem('phasvy_session');
+  if (stored) {
+    try {
+      session = JSON.parse(stored);
+    } catch (_) {
+      session = { token: null, user: null };
+    }
+  }
+};
 
 function renderProducts() {
   if (!productGrid) return;
@@ -272,40 +298,50 @@ function closeModal() {
 }
 
 // Formularios (demostrativo: imprime la respuesta del backend)
+const publicFetch = (path, options = {}) => fetch(`${API_BASE}${path}`, options);
+
 async function handleRegister(event) {
   event.preventDefault();
-  const data = Object.fromEntries(new FormData(event.target));
-  const res = await fetch('/api/auth/register', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  });
-  const json = await res.json();
-  alert(json.message || 'Usuario creado, revisa la consola.');
-  console.log('Registro', json);
+  try {
+    const data = Object.fromEntries(new FormData(event.target));
+    const res = await publicFetch('/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.message || 'No se pudo registrar');
+    session = { token: json.token, user: json.user };
+    persistSession();
+    updateSessionUI();
+    alert(`Cuenta creada. Hola ${json.user.name}`);
+  } catch (error) {
+    alert(error.message || 'No se pudo registrar');
+    console.error('Registro', error);
+  }
 }
 
 async function handleLogin(event) {
   event.preventDefault();
-  const data = Object.fromEntries(new FormData(event.target));
-  const res = await fetch('/api/auth/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  });
-  const json = await res.json();
-  if (res.ok) {
+  try {
+    const data = Object.fromEntries(new FormData(event.target));
+    const res = await publicFetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.message || 'Error de inicio de sesión');
     alert(`Bienvenido ${json.user.name}. Rol: ${json.user.role}`);
     session = { token: json.token, user: json.user };
+    persistSession();
     updateSessionUI();
     await loadNotifications();
     await loadThreads();
-    // Aquí podrías redirigir según rol
-    // if (json.user.role === 'admin') window.location = '/admin';
-  } else {
-    alert(json.message || 'Error de inicio de sesión');
+  } catch (error) {
+    alert(error.message || 'Error de inicio de sesión');
+    console.error('Login', error);
   }
-  console.log('Login', json);
 }
 
 // Sesiones demo rápidas para probar chat y notificaciones
@@ -317,7 +353,7 @@ async function loginDemo(role) {
   }[role];
 
   if (!demoCreds) return;
-  const res = await fetch('/api/auth/login', {
+  const res = await publicFetch('/api/auth/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(demoCreds)
@@ -325,6 +361,7 @@ async function loginDemo(role) {
   const json = await res.json();
   if (res.ok) {
     session = { token: json.token, user: json.user };
+    persistSession();
     updateSessionUI();
     await loadNotifications();
     await loadThreads();
@@ -336,15 +373,21 @@ async function loginDemo(role) {
   }
 }
 
-const authFetch = (url, options = {}) => {
+const authFetch = async (url, options = {}) => {
   if (!session.token) return Promise.reject(new Error('Requiere sesión'));
-  return fetch(url, {
+  const response = await fetch(`${API_BASE}${url}`, {
     ...options,
     headers: {
       ...(options.headers || {}),
       Authorization: `Bearer ${session.token}`
     }
   });
+  if (response.status === 401) {
+    session = { token: null, user: null };
+    persistSession();
+    updateSessionUI();
+  }
+  return response;
 };
 
 function updateSessionUI() {
@@ -358,64 +401,76 @@ function updateSessionUI() {
 
 async function loadNotifications() {
   if (!notificationList || !session.token) return;
-  const res = await authFetch('/api/notifications');
-  const data = await res.json();
-  notificationList.innerHTML = data.items
-    .map(
-      (n) => `
-        <li class="notice ${n.read ? 'is-read' : ''}">
-          <div>
-            <p class="notice__title">${n.title || n.type}</p>
-            <p class="notice__text">${n.content}</p>
-          </div>
-          <span class="notice__meta">${new Date(n.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-        </li>
-      `
-    )
-    .join('');
-  const unread = data.items.filter((n) => !n.read).length;
-  if (notificationBadge) notificationBadge.textContent = unread > 0 ? unread : '';
-  await authFetch('/api/notifications/read', { method: 'PATCH' });
+  try {
+    const res = await authFetch('/api/notifications');
+    const data = await res.json();
+    notificationList.innerHTML = data.items
+      .map(
+        (n) => `
+          <li class="notice ${n.read ? 'is-read' : ''}">
+            <div>
+              <p class="notice__title">${n.title || n.type}</p>
+              <p class="notice__text">${n.content}</p>
+            </div>
+            <span class="notice__meta">${new Date(n.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+          </li>
+        `
+      )
+      .join('');
+    const unread = data.items.filter((n) => !n.read).length;
+    if (notificationBadge) notificationBadge.textContent = unread > 0 ? unread : '';
+    await authFetch('/api/notifications/read', { method: 'PATCH' });
+  } catch (error) {
+    console.error('No se pudieron cargar notificaciones', error);
+  }
 }
 
 async function loadThreads() {
   if (!chatThreads || !session.token) return;
-  const res = await authFetch('/api/chat/threads');
-  const data = await res.json();
-  chatThreads.innerHTML = data.threads
-    .map(
-      (t) => `
-        <button class="thread ${activeChatWith === t.with.id ? 'active' : ''}" data-thread="${t.with.id}">
-          <div>
-            <strong>${t.with.name}</strong>
-            <p class="muted">${t.lastMessage.text.slice(0, 42)}${t.lastMessage.text.length > 42 ? '…' : ''}</p>
-          </div>
-          ${t.unread ? `<span class="badge badge--pill">${t.unread}</span>` : ''}
-        </button>
-      `
-    )
-    .join('');
-  if (!activeChatWith && data.threads.length) {
-    activeChatWith = data.threads[0].with.id;
-    await loadConversation(activeChatWith);
+  try {
+    const res = await authFetch('/api/chat/threads');
+    const data = await res.json();
+    chatThreads.innerHTML = data.threads
+      .map(
+        (t) => `
+          <button class="thread ${activeChatWith === t.with.id ? 'active' : ''}" data-thread="${t.with.id}">
+            <div>
+              <strong>${t.with.name}</strong>
+              <p class="muted">${t.lastMessage.text.slice(0, 42)}${t.lastMessage.text.length > 42 ? '…' : ''}</p>
+            </div>
+            ${t.unread ? `<span class="badge badge--pill">${t.unread}</span>` : ''}
+          </button>
+        `
+      )
+      .join('');
+    if (!activeChatWith && data.threads.length) {
+      activeChatWith = data.threads[0].with.id;
+      await loadConversation(activeChatWith);
+    }
+  } catch (error) {
+    console.error('No se pudieron cargar chats', error);
   }
 }
 
 async function loadConversation(userId) {
   if (!chatMessages || !session.token) return;
-  const res = await authFetch(`/api/chat/with/${userId}`);
-  const data = await res.json();
-  activeChatWith = userId;
-  chatMessages.innerHTML = data.messages
-    .map(
-      (m) => `
-        <div class="bubble ${m.from === session.user.id ? 'me' : ''}">
-          <p>${m.text}</p>
-          <small>${new Date(m.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</small>
-        </div>
-      `
-    )
-    .join('');
+  try {
+    const res = await authFetch(`/api/chat/with/${userId}`);
+    const data = await res.json();
+    activeChatWith = userId;
+    chatMessages.innerHTML = data.messages
+      .map(
+        (m) => `
+          <div class="bubble ${m.from === session.user.id ? 'me' : ''}">
+            <p>${m.text}</p>
+            <small>${new Date(m.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</small>
+          </div>
+        `
+      )
+      .join('');
+  } catch (error) {
+    console.error('No se pudo cargar la conversación', error);
+  }
 }
 
 // Menú responsive
@@ -489,8 +544,14 @@ if (demoLoginButtons.length) {
   demoLoginButtons.forEach((btn) => btn.addEventListener('click', () => loginDemo(btn.dataset.demoLogin)));
 }
 
+restoreSession();
 updateSessionUI();
 
 renderProducts();
 renderVendors();
 startSlider();
+
+if (session.token) {
+  loadNotifications();
+  loadThreads();
+}
