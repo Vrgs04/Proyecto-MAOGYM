@@ -145,6 +145,55 @@
       </div>
     </section>
 
+    <section class="section chat-center" id="mensajes">
+      <div class="section__header">
+        <p class="pill">Conversaciones</p>
+        <h2>Chat y buzón de notificaciones</h2>
+        <p>Cliente y vendedor hablan en vivo desde la página. Las alertas también avisan de nuevos productos y mensajes.</p>
+      </div>
+      <div class="chat-center__grid">
+        <article class="card session-card">
+          <h3>Sesiones rápidas</h3>
+          <p id="session-status" class="muted">Sin sesión activa. Usa un demo para probar chat y notificaciones.</p>
+          <div class="chips-inline">
+            <button class="btn btn--primary" type="button" data-demo-login="cliente">Cliente demo</button>
+            <button class="btn" type="button" data-demo-login="vendedor">Vendedor demo</button>
+            <button class="btn btn--ghost" type="button" data-demo-login="admin">Admin demo</button>
+          </div>
+          <p class="hint">Credenciales reales se guardan en el backend con contraseña hasheada.</p>
+        </article>
+        <article class="card inbox-card">
+          <div class="card__header">
+            <h3>Buzón</h3>
+            <span class="badge" data-notification-badge></span>
+          </div>
+          <ul id="notification-list" class="notice-list" aria-live="polite"></ul>
+        </article>
+        <article class="card chat-card">
+          <div class="chat-card__columns">
+            <div class="chat-card__threads">
+              <div class="card__header">
+                <h4>Hilos</h4>
+              </div>
+              <div id="chat-threads" class="threads" role="list"></div>
+            </div>
+            <div class="chat-card__messages">
+              <div class="card__header">
+                <h4>Mensajes</h4>
+              </div>
+              <div id="chat-messages" class="bubbles" aria-live="polite"></div>
+              <form id="chat-form" class="chat-form">
+                <label class="sr-only" for="chat-text">Mensaje</label>
+                <textarea id="chat-text" placeholder="Escribe a tu vendedor o cliente..." required></textarea>
+                <button class="btn btn--primary" type="submit">Enviar</button>
+              </form>
+            </div>
+          </div>
+          <p class="hint">El chat usa la API /api/chat y marca notificaciones nuevas para el destinatario.</p>
+        </article>
+      </div>
+    </section>
+
     <section class="section panels">
       <div class="section__header">
         <p class="pill">Paneles por rol</p>

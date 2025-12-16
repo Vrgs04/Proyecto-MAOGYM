@@ -177,10 +177,60 @@ let products = [
   }
 ];
 
+let messages = [
+  {
+    id: 'msg_seed1',
+    from: 'u3',
+    to: 'u2',
+    text: 'Hola Laura, me interesa el bowl de quinoa con pollo, ¿aún lo tienes disponible hoy?',
+    productId: 'p1',
+    date: new Date().toISOString(),
+    read: false
+  },
+  {
+    id: 'msg_seed2',
+    from: 'u2',
+    to: 'u3',
+    text: '¡Hola Carlos! Sí, puedo prepararlo para la tarde y enviarte el costo del envío.',
+    productId: 'p1',
+    date: new Date().toISOString(),
+    read: false
+  }
+];
+let notifications = {};
+
+const ensureInbox = (userId) => {
+  if (!notifications[userId]) notifications[userId] = [];
+};
+
+users.forEach((u) => ensureInbox(u.id));
+
 // ------------------ Utilidades ------------------
 const generateId = (prefix = 'id') => `${prefix}_${Math.random().toString(36).slice(2, 9)}`;
 
 const signToken = (user) => jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '2h' });
+
+const addNotification = (userId, payload) => {
+  ensureInbox(userId);
+  notifications[userId].unshift({
+    id: generateId('ntf'),
+    date: new Date().toISOString(),
+    read: false,
+    ...payload
+  });
+};
+
+const broadcastNotification = (roles, payload) => {
+  users
+    .filter((u) => u.active && roles.includes(u.role))
+    .forEach((u) => addNotification(u.id, payload));
+};
+
+broadcastNotification(['cliente', 'vendedor'], {
+  type: 'actualizacion',
+  title: 'Catálogo Phasvy listo',
+  content: 'Cargamos el catálogo inicial con lanzamientos naranjas.'
+});
 
 const authMiddleware = (req, res, next) => {
   const header = req.headers.authorization;
@@ -228,6 +278,7 @@ app.post('/api/auth/register', async (req, res) => {
       active: true
     };
     users.push(newUser);
+    ensureInbox(newUser.id);
     const token = signToken(newUser);
     return res.status(201).json({ token, user: { id: newUser.id, name, email, role, avatar: newUser.avatar, bio: newUser.bio, contact: newUser.contact } });
   } catch (error) {
@@ -290,6 +341,11 @@ app.post('/api/products', authMiddleware, requireRole('vendedor', 'admin'), (req
     active: true
   };
   products.push(newProduct);
+  broadcastNotification(['cliente', 'vendedor'], {
+    type: 'producto',
+    title: 'Nuevo producto',
+    content: `${req.user.name} publicó ${title}`
+  });
   res.status(201).json(newProduct);
 });
 
@@ -304,6 +360,11 @@ app.put('/api/products/:id', authMiddleware, requireRole('vendedor', 'admin'), (
   if (price) product.price = Number(price);
   if (description) product.description = description;
   if (image) product.image = image;
+  broadcastNotification(['cliente', 'vendedor'], {
+    type: 'actualizacion',
+    title: 'Producto actualizado',
+    content: `${product.title} recibió cambios de ${req.user.name}`
+  });
   res.json(product);
 });
 
@@ -325,6 +386,11 @@ app.patch('/api/products/:id/toggle', authMiddleware, requireRole('vendedor', 'a
     return res.status(403).json({ message: 'No puedes actualizar productos de otros vendedores' });
   }
   product.active = !product.active;
+  broadcastNotification(['cliente', 'vendedor'], {
+    type: 'actualizacion',
+    title: 'Estado de producto',
+    content: `${product.title} ahora está ${product.active ? 'visible' : 'pausado'}`
+  });
   res.json({ id: product.id, active: product.active });
 });
 
@@ -346,6 +412,86 @@ app.put('/api/clients/me', authMiddleware, requireRole('cliente'), (req, res) =>
   if (contact) req.user.contact = contact;
   const { passwordHash, ...safeUser } = req.user;
   res.json({ user: safeUser });
+});
+
+// Notificaciones
+app.get('/api/notifications', authMiddleware, (req, res) => {
+  ensureInbox(req.user.id);
+  res.json({ items: notifications[req.user.id] });
+});
+
+app.patch('/api/notifications/read', authMiddleware, (req, res) => {
+  ensureInbox(req.user.id);
+  notifications[req.user.id] = notifications[req.user.id].map((n) => ({ ...n, read: true }));
+  res.json({ read: true });
+});
+
+// Chat cliente-vendedor
+app.post('/api/chat/send', authMiddleware, (req, res) => {
+  const { to, text, productId } = req.body;
+  if (!to || !text) return res.status(400).json({ message: 'Destino y texto son obligatorios' });
+  const recipient = users.find((u) => u.id === to && u.active);
+  if (!recipient) return res.status(404).json({ message: 'Destinatario no encontrado o inactivo' });
+
+  const message = {
+    id: generateId('msg'),
+    from: req.user.id,
+    to,
+    text,
+    productId: productId || null,
+    date: new Date().toISOString(),
+    read: false
+  };
+  messages.push(message);
+  addNotification(to, {
+    type: 'mensaje',
+    title: 'Nuevo mensaje',
+    content: `${req.user.name}: ${text.slice(0, 70)}${text.length > 70 ? '…' : ''}`
+  });
+  res.status(201).json({ message });
+});
+
+app.get('/api/chat/threads', authMiddleware, (req, res) => {
+  const relevant = messages.filter((m) => m.from === req.user.id || m.to === req.user.id);
+  const grouped = {};
+
+  relevant.forEach((m) => {
+    const otherId = m.from === req.user.id ? m.to : m.from;
+    if (!grouped[otherId]) {
+      grouped[otherId] = { last: m, unread: 0 };
+    }
+    if (new Date(m.date) > new Date(grouped[otherId].last.date)) grouped[otherId].last = m;
+    if (!m.read && m.to === req.user.id) grouped[otherId].unread += 1;
+  });
+
+  const threads = Object.entries(grouped)
+    .map(([otherId, data]) => {
+      const other = users.find((u) => u.id === otherId);
+      if (!other) return null;
+      const { passwordHash, ...safeOther } = other;
+      return { with: safeOther, lastMessage: data.last, unread: data.unread };
+    })
+    .filter(Boolean)
+    .sort((a, b) => new Date(b.lastMessage.date) - new Date(a.lastMessage.date));
+
+  res.json({ threads });
+});
+
+app.get('/api/chat/with/:id', authMiddleware, (req, res) => {
+  const other = users.find((u) => u.id === req.params.id);
+  if (!other) return res.status(404).json({ message: 'Usuario no encontrado' });
+  const conversation = messages
+    .filter((m) =>
+      (m.from === req.user.id && m.to === other.id) || (m.to === req.user.id && m.from === other.id)
+    )
+    .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  conversation.forEach((m) => {
+    if (m.to === req.user.id) m.read = true;
+  });
+
+  const { passwordHash, ...safeOther } = other;
+  res.json({ with: safeOther, messages: conversation });
 });
 
 // -------------- Inicio del servidor --------------

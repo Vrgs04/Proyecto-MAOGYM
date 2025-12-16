@@ -248,12 +248,45 @@ input, select { padding: 0.7rem 0.9rem; border-radius: 0.75rem; border: 1px soli
 }
 .contact-modal__close { position: absolute; top: 0.5rem; right: 0.75rem; border: none; background: none; font-size: 1.25rem; cursor: pointer; }
 
+.chat-center__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+.session-card .chips-inline { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.inbox-card ul { padding: 0; margin: 0; list-style: none; }
+.card__header { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.notice-list { display: grid; gap: 0.75rem; }
+.notice { display: flex; justify-content: space-between; gap: 0.75rem; padding: 0.75rem; border: 1px solid var(--border); border-radius: 0.75rem; background: #fff; }
+.notice.is-read { opacity: 0.65; }
+.notice__title { font-weight: 700; margin: 0; }
+.notice__text { margin: 0.15rem 0; color: var(--muted); }
+.notice__meta { color: var(--muted); font-size: 0.85rem; white-space: nowrap; }
+.badge--pill { background: #fff; color: var(--orange); padding: 0 0.5rem; border-radius: 999px; }
+
+.chat-card { display: flex; flex-direction: column; gap: 1rem; }
+.chat-card__columns { display: grid; grid-template-columns: 1fr 2fr; gap: 1rem; }
+.chat-card__threads, .chat-card__messages { border: 1px solid var(--border); border-radius: 1rem; background: #fff; padding: 0.75rem; min-height: 320px; display: flex; flex-direction: column; gap: 0.75rem; }
+.threads { display: grid; gap: 0.5rem; }
+.thread { width: 100%; border: 1px solid var(--border); border-radius: 0.75rem; padding: 0.75rem; background: #fefcf6; text-align: left; display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; cursor: pointer; transition: border 0.2s; }
+.thread.active { border-color: var(--orange); }
+.bubbles { flex: 1; display: grid; gap: 0.5rem; align-content: start; }
+.bubble { max-width: 85%; padding: 0.75rem; border-radius: 0.85rem; background: #f5f1ec; color: #111; }
+.bubble.me { margin-left: auto; background: var(--orange); color: #fff; }
+.bubble small { display: block; margin-top: 0.25rem; color: rgba(17, 17, 17, 0.7); }
+.bubble.me small { color: rgba(255, 255, 255, 0.85); }
+.chat-form { display: grid; grid-template-columns: 1fr auto; gap: 0.5rem; align-items: center; }
+.chat-form textarea { width: 100%; min-height: 48px; resize: vertical; border-radius: 0.75rem; border: 1px solid var(--border); padding: 0.75rem; }
+.product__actions { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
+
 @media (max-width: 900px) {
   .nav { display: none; position: absolute; right: 1rem; top: 64px; background: white; padding: 1rem; border: 1px solid var(--border); border-radius: 0.75rem; box-shadow: var(--shadow); flex-direction: column; }
   .nav.open { display: flex; }
   .menu-toggle { display: inline-flex; }
   .hero { height: 70vh; }
   .auth { grid-template-columns: 1fr; }
+  .chat-card__columns { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 600px) {
