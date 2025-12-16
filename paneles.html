@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paneles por rol | Food&Market</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="paneles">
+  <header class="navbar">
+    <div class="logo">Food&Market</div>
+    <nav class="nav" aria-label="Navegación principal">
+      <a href="index.html">Inicio</a>
+      <a href="como-funciona.html">Cómo funciona</a>
+      <a href="productos.html">Explorar productos</a>
+      <a href="vendedores.html">Vendedores</a>
+      <a href="auth.html">Iniciar sesión</a>
+      <a class="btn btn--primary" href="auth.html#registro">Registrarse</a>
+    </nav>
+    <button class="menu-toggle" aria-label="Abrir menú">☰</button>
+  </header>
+
+  <main class="page">
+    <section class="page-hero">
+      <div>
+        <p class="pill">Paneles por rol</p>
+        <h1>Experiencia personalizada para admin, vendedores y clientes</h1>
+        <p>Cada rol accede a acciones específicas. Tras login con JWT, el front puede redirigir al panel correcto.</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="auth.html">Iniciar sesión</a>
+          <a class="btn btn--ghost" href="auth.html#registro">Crear cuenta</a>
+        </div>
+      </div>
+      <div class="page-hero__card">
+        <h3>Flujos recomendados</h3>
+        <ul>
+          <li>Admin ve usuarios y productos.</li>
+          <li>Vendedor gestiona su inventario.</li>
+          <li>Cliente edita perfil y ve sugerencias.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section panels">
+      <div class="section__header">
+        <p class="pill">Roles</p>
+        <h2>Paneles dedicados</h2>
+        <p>Los paneles pueden implementarse como vistas separadas protegidas por token.</p>
+      </div>
+      <div class="panels__grid">
+        <article class="panel-card" id="admin">
+          <h3>Panel Administrador</h3>
+          <ul>
+            <li>Tabla de usuarios con rol y estado.</li>
+            <li>Activar / desactivar cuentas y productos.</li>
+            <li>Ver todas las publicaciones.</li>
+          </ul>
+          <span class="badge">API: /api/users</span>
+        </article>
+        <article class="panel-card" id="vendedor">
+          <h3>Panel Vendedor</h3>
+          <ul>
+            <li>Crear, editar y eliminar productos.</li>
+            <li>Ver estadísticas básicas de inventario.</li>
+            <li>Acceso rápido a su perfil público.</li>
+          </ul>
+          <span class="badge">API: /api/products</span>
+        </article>
+        <article class="panel-card" id="cliente">
+          <h3>Panel Cliente</h3>
+          <ul>
+            <li>Editar avatar, datos de contacto y descripción.</li>
+            <li>Explorar productos recomendados.</li>
+            <li>Historial o favoritos (simulado).</li>
+          </ul>
+          <span class="badge">API: /api/clients/me</span>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>
+      <strong>Food&Market</strong>
+      <p>Marketplace local para conectar vendedores y clientes.</p>
+    </div>
+    <div class="footer__links">
+      <a href="index.html">Inicio</a>
+      <a href="como-funciona.html">Cómo funciona</a>
+      <a href="productos.html">Productos</a>
+      <a href="auth.html">Acceso</a>
+    </div>
+    <div class="footer__meta">© 2024 Food&Market · Políticas · Contacto</div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>

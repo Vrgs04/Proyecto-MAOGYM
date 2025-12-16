@@ -37,6 +37,7 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
 }
 .nav a { padding: 0.5rem 0.75rem; color: var(--muted); font-weight: 600; }
+.nav a.active { color: var(--primary); }
 .nav a:hover { color: var(--text); }
 .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; }
 
@@ -109,6 +110,32 @@ a { color: inherit; text-decoration: none; }
 .section__header h2 { margin: 0.5rem 0; font-size: 2rem; }
 .section__header p { color: var(--muted); margin: 0; }
 
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.page-hero {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.page-hero__card {
+  background: linear-gradient(180deg, var(--card), #eef2ff);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+.page-hero__card ul { padding-left: 1.2rem; color: var(--muted); }
+
 .grid {
   display: grid;
   gap: 1.5rem;
@@ -126,6 +153,21 @@ a { color: inherit; text-decoration: none; }
 .card h3 { margin: 0.5rem 0; }
 .card p { color: var(--muted); }
 .card .icon { font-size: 1.8rem; }
+
+.center-actions { display: flex; justify-content: center; margin-top: 1rem; }
+.center-actions .btn { min-width: 200px; }
+
+.chip-group { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.chip {
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--muted);
+}
+.chip.active { background: var(--primary-soft); color: var(--primary); border-color: rgba(124, 58, 237, 0.35); }
 
 .product {
   display: flex;

@@ -8,6 +8,7 @@ const products = [
     price: 12.5,
     description: 'Receta saludable lista en 15 minutos.',
     image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80',
+    tags: ['saludable'],
     vendor: {
       name: 'Laura Chef',
       avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=200&q=80',
@@ -20,6 +21,7 @@ const products = [
     price: 9.99,
     description: 'Pan brioche, carne angus y salsas caseras.',
     image: 'https://images.unsplash.com/photo-1499028344343-cd173ffc68a9?auto=format&fit=crop&w=800&q=80',
+    tags: ['rapida'],
     vendor: {
       name: 'Laura Chef',
       avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=200&q=80',
@@ -32,6 +34,7 @@ const products = [
     price: 7.5,
     description: 'Hojaldre crujiente recién horneado.',
     image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80',
+    tags: ['postres'],
     vendor: {
       name: 'Panadería París',
       avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=200&q=80',
@@ -44,6 +47,7 @@ const products = [
     price: 15.0,
     description: 'Selección semanal de frutas de temporada.',
     image: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=80',
+    tags: ['saludable', 'vegano'],
     vendor: {
       name: 'Huerta Verde',
       avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
@@ -74,9 +78,16 @@ const vendorGrid = document.getElementById('vendor-grid');
 const modal = document.getElementById('contact-modal');
 const contactInfo = document.getElementById('contact-info');
 const modalClose = document.querySelector('.contact-modal__close');
+const chips = document.querySelectorAll('.chip');
+let currentFilter = 'all';
 
 function renderProducts() {
-  productGrid.innerHTML = products.map((p) => `
+  if (!productGrid) return;
+  const list = currentFilter === 'all'
+    ? products
+    : products.filter((p) => p.tags?.includes(currentFilter));
+
+  productGrid.innerHTML = list.map((p) => `
     <article class="card product">
       <img src="${p.image}" alt="${p.title}">
       <h3>${p.title}</h3>
@@ -94,6 +105,7 @@ function renderProducts() {
 }
 
 function renderVendors() {
+  if (!vendorGrid) return;
   vendorGrid.innerHTML = vendors.map((v) => `
     <article class="card vendor">
       <img src="${v.avatar}" alt="${v.name}">
@@ -129,6 +141,8 @@ function goToSlide(index) {
 }
 
 function startSlider() {
+  if (!slides.length || !dotsContainer) return;
+  dotsContainer.innerHTML = '';
   buildDots();
   goToSlide(0);
   setInterval(() => {
@@ -184,18 +198,32 @@ async function handleLogin(event) {
 // Menú responsive
 const menuToggle = document.querySelector('.menu-toggle');
 const nav = document.querySelector('.nav');
-menuToggle.addEventListener('click', () => nav.classList.toggle('open'));
+if (menuToggle && nav) menuToggle.addEventListener('click', () => nav.classList.toggle('open'));
 
 // Delegación de eventos
-productGrid.addEventListener('click', (e) => {
-  const btn = e.target.closest('button[data-contact]');
-  if (btn) openModal(btn.dataset.contact);
-});
-modalClose.addEventListener('click', closeModal);
-modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+if (productGrid) {
+  productGrid.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-contact]');
+    if (btn) openModal(btn.dataset.contact);
+  });
+}
+if (chips.length) {
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      chips.forEach((c) => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentFilter = chip.dataset.filter || 'all';
+      renderProducts();
+    });
+  });
+}
+if (modalClose) modalClose.addEventListener('click', closeModal);
+if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 
-document.getElementById('register-form').addEventListener('submit', handleRegister);
-document.getElementById('login-form').addEventListener('submit', handleLogin);
+const registerForm = document.getElementById('register-form');
+const loginForm = document.getElementById('login-form');
+if (registerForm) registerForm.addEventListener('submit', handleRegister);
+if (loginForm) loginForm.addEventListener('submit', handleLogin);
 
 renderProducts();
 renderVendors();
