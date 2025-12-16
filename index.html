@@ -3,456 +3,218 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MAO Gym | Dashboard</title>
+  <title>Food&Market | Marketplace local</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="layout">
-    <aside class="sidebar" aria-label="Menú principal">
-      <div class="brand">MAO Gym</div>
-      <nav>
-        <ul class="menu">
-          <li>
-            <a class="menu__item menu__item--active" href="#dashboard" data-target="dashboard">
-              <span class="menu__icon">📊</span>
-              <span>Dashboard</span>
-            </a>
-          </li>
-          <li>
-            <a class="menu__item" href="#entrenamientos" data-target="entrenamientos">
-              <span class="menu__icon">💪</span>
-              <span>Entrenamientos</span>
-            </a>
-          </li>
-          <li>
-            <a class="menu__item" href="#clases" data-target="clases">
-              <span class="menu__icon">🧘‍♀️</span>
-              <span>Clases</span>
-            </a>
-          </li>
-          <li>
-            <a class="menu__item" href="#miembros" data-target="miembros">
-              <span class="menu__icon">👥</span>
-              <span>Miembros</span>
-            </a>
-          </li>
-          <li>
-            <a class="menu__item" href="#ajustes" data-target="ajustes">
-              <span class="menu__icon">⚙️</span>
-              <span>Ajustes</span>
-            </a>
-          </li>
+  <header class="navbar">
+    <div class="logo">Food&Market</div>
+    <nav class="nav" aria-label="Navegación principal">
+      <a href="#inicio">Inicio</a>
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#productos">Explorar productos</a>
+      <a href="#vendedores">Vendedores</a>
+      <a href="#auth">Iniciar sesión</a>
+      <a class="btn btn--primary" href="#auth">Registrarse</a>
+    </nav>
+    <button class="menu-toggle" aria-label="Abrir menú">☰</button>
+  </header>
+
+  <main id="inicio">
+    <section class="hero">
+      <div class="slider" aria-label="Destacados">
+        <div class="slide active" style="background-image:url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1400&q=80')">
+          <div class="slide__overlay"></div>
+          <div class="slide__content">
+            <p class="pill">Marketplace local</p>
+            <h1>Conecta con vendedores de tu ciudad</h1>
+            <p>Productos frescos, artesanales y listos para ti.</p>
+            <div class="hero__actions">
+              <a class="btn btn--primary" href="#productos">Explorar productos</a>
+              <a class="btn btn--ghost" href="#auth">Empieza a vender</a>
+            </div>
+          </div>
+        </div>
+        <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1400&q=80')">
+          <div class="slide__overlay"></div>
+          <div class="slide__content">
+            <p class="pill">Comunidad</p>
+            <h1>Un panel para cada rol</h1>
+            <p>Administra usuarios, publica productos o descubre tus favoritos.</p>
+            <div class="hero__actions">
+              <a class="btn btn--primary" href="#paneles">Ver paneles</a>
+              <a class="btn btn--ghost" href="#como-funciona">Saber más</a>
+            </div>
+          </div>
+        </div>
+        <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1400&q=80')">
+          <div class="slide__overlay"></div>
+          <div class="slide__content">
+            <p class="pill">Seguridad</p>
+            <h1>Accesos con roles y contraseñas seguras</h1>
+            <p>Autenticación con JWT lista para producción.</p>
+            <div class="hero__actions">
+              <a class="btn btn--primary" href="#auth">Inicia sesión</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slider__dots" role="tablist"></div>
+    </section>
+
+    <section id="como-funciona" class="section">
+      <div class="section__header">
+        <p class="pill">Guía rápida</p>
+        <h2>¿Qué hace esta página?</h2>
+        <p>Food&Market es un intermediario: los vendedores publican sus productos y los clientes los encuentran y contactan sin fricción.</p>
+      </div>
+      <div class="grid cards--info">
+        <article class="card">
+          <div class="icon">📝</div>
+          <h3>Crea tu cuenta</h3>
+          <p>Elige ser cliente o vendedor durante el registro.</p>
+        </article>
+        <article class="card">
+          <div class="icon">📸</div>
+          <h3>Publica tus productos</h3>
+          <p>Agrega fotos, precios y descripción desde tu panel de vendedor.</p>
+        </article>
+        <article class="card">
+          <div class="icon">🛒</div>
+          <h3>Explora y encuentra</h3>
+          <p>Filtra y descubre productos destacados cerca de ti.</p>
+        </article>
+        <article class="card">
+          <div class="icon">📞</div>
+          <h3>Contacta al vendedor</h3>
+          <p>Habla directo por WhatsApp o correo con un clic.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="productos" class="section">
+      <div class="section__header">
+        <p class="pill">Productos destacados</p>
+        <h2>Explora el marketplace</h2>
+        <p>Tarjetas con imagen, precio y vendedor. El botón de contacto revela los datos del vendedor.</p>
+      </div>
+      <div class="grid" id="product-grid" aria-live="polite"></div>
+    </section>
+
+    <section id="vendedores" class="section">
+      <div class="section__header">
+        <p class="pill">Vendedores</p>
+        <h2>Perfiles públicos</h2>
+        <p>Visita el perfil de cada vendedor y conoce sus productos.</p>
+      </div>
+      <div class="grid" id="vendor-grid"></div>
+    </section>
+
+    <section id="paneles" class="section panels">
+      <div class="section__header">
+        <p class="pill">Paneles por rol</p>
+        <h2>Experiencia personalizada</h2>
+        <p>Tras iniciar sesión, cada rol ve opciones específicas.</p>
+      </div>
+      <div class="panels__grid">
+        <article class="panel-card">
+          <h3>Administrador</h3>
+          <ul>
+            <li>Ver lista de usuarios y roles.</li>
+            <li>Activar / desactivar vendedores o clientes.</li>
+            <li>Gestionar todos los productos publicados.</li>
+          </ul>
+          <span class="badge">Ruta: /api/users</span>
+        </article>
+        <article class="panel-card">
+          <h3>Vendedor</h3>
+          <ul>
+            <li>Publicar, editar y eliminar sus productos.</li>
+            <li>Ver estadísticas rápidas de sus publicaciones.</li>
+            <li>Perfil público en /vendedor/:id con su catálogo.</li>
+          </ul>
+          <span class="badge">Ruta: /api/products</span>
+        </article>
+        <article class="panel-card">
+          <h3>Cliente</h3>
+          <ul>
+            <li>Editar su información básica y avatar.</li>
+            <li>Explorar productos y contactar vendedores.</li>
+            <li>Guardar favoritos o historial (simulado).</li>
+          </ul>
+          <span class="badge">Ruta: /api/clients/me</span>
+        </article>
+      </div>
+    </section>
+
+    <section id="auth" class="section auth">
+      <div class="auth__forms">
+        <div class="form-card">
+          <h3>Registrarse</h3>
+          <form id="register-form">
+            <label>Nombre<input name="name" required></label>
+            <label>Email<input type="email" name="email" required></label>
+            <label>Contraseña<input type="password" name="password" required></label>
+            <label>Rol
+              <select name="role">
+                <option value="cliente">Cliente</option>
+                <option value="vendedor">Vendedor</option>
+              </select>
+            </label>
+            <label>Avatar (URL)<input name="avatar" placeholder="https://..."></label>
+            <label>Descripción<input name="bio" placeholder="¿Qué ofreces o qué buscas?"></label>
+            <button class="btn btn--primary" type="submit">Crear cuenta</button>
+            <p class="hint">Contraseñas hasheadas + JWT en el backend.</p>
+          </form>
+        </div>
+        <div class="form-card">
+          <h3>Iniciar sesión</h3>
+          <form id="login-form">
+            <label>Email<input type="email" name="email" required></label>
+            <label>Contraseña<input type="password" name="password" required></label>
+            <button class="btn" type="submit">Entrar</button>
+            <p class="hint">Admin demo: admin@demo.com / Admin123!</p>
+          </form>
+        </div>
+      </div>
+      <div class="auth__info">
+        <h3>Autenticación y redirección</h3>
+        <p>Al iniciar sesión, el backend devuelve un JWT con el rol. Úsalo en el front para redirigir:</p>
+        <ul>
+          <li><strong>admin</strong> ➜ panel administrativo.</li>
+          <li><strong>vendedor</strong> ➜ panel de productos.</li>
+          <li><strong>cliente</strong> ➜ página de inicio personalizada.</li>
         </ul>
-      </nav>
-      <button class="sidebar__toggle" type="button" aria-label="Contraer menú">☰</button>
-    </aside>
+        <p>Ejemplo de cabecera: <code>Authorization: Bearer &lt;token&gt;</code>.</p>
+      </div>
+    </section>
+  </main>
 
-    <main class="content">
-      <section id="dashboard" class="section" data-section="dashboard" aria-label="Dashboard">
-        <header class="content__header">
-          <div>
-            <p class="breadcrumb">Inicio / Dashboard</p>
-            <h1>Panel general</h1>
-          </div>
-          <div class="actions">
-            <button class="btn btn--ghost">Exportar</button>
-            <button class="btn">Nuevo reporte</button>
-          </div>
-        </header>
+  <footer class="footer">
+    <div>
+      <strong>Food&Market</strong>
+      <p>Marketplace local para conectar vendedores y clientes.</p>
+    </div>
+    <div class="footer__links">
+      <a href="#inicio">Inicio</a>
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#productos">Productos</a>
+      <a href="#auth">Acceso</a>
+    </div>
+    <div class="footer__meta">© 2024 Food&Market · Políticas · Contacto</div>
+  </footer>
 
-        <div class="cards" aria-label="Resumen de métricas">
-          <article class="card">
-            <div class="card__label">Miembros activos</div>
-            <div class="card__value">324</div>
-            <div class="card__delta card__delta--positive">+8% vs semana pasada</div>
-          </article>
-          <article class="card">
-            <div class="card__label">Reservas de clase</div>
-            <div class="card__value">142</div>
-            <div class="card__delta">+3 nuevas hoy</div>
-          </article>
-          <article class="card">
-            <div class="card__label">Ingresos mensuales</div>
-            <div class="card__value">$12,430</div>
-            <div class="card__delta card__delta--positive">+12% crecimiento</div>
-          </article>
-        </div>
-
-        <div class="grid" aria-label="Detalles del dashboard">
-          <article class="panel">
-            <header class="panel__header">
-              <h2>Asistencia semanal</h2>
-              <span class="pill">Últimos 7 días</span>
-            </header>
-            <div class="progress">
-              <div class="progress__bar" style="width: 78%"></div>
-            </div>
-            <p class="panel__meta">78% de ocupación promedio en todas las clases.</p>
-          </article>
-
-          <article class="panel">
-            <header class="panel__header">
-              <h2>Tareas rápidas</h2>
-            </header>
-            <ul class="tasks">
-              <li><input type="checkbox" id="t1" checked><label for="t1">Confirmar agenda de entrenadores</label></li>
-              <li><input type="checkbox" id="t2"><label for="t2">Enviar recordatorios a miembros inactivos</label></li>
-              <li><input type="checkbox" id="t3"><label for="t3">Actualizar horario de clases</label></li>
-            </ul>
-            <button class="btn btn--ghost btn--full">Ver todas las tareas</button>
-          </article>
-        </div>
-      </section>
-
-      <section id="entrenamientos" class="training section" data-section="entrenamientos" aria-label="Entrenamientos">
-        <header class="training__header">
-          <div>
-            <p class="breadcrumb">Inicio / Entrenamientos</p>
-            <h2>Plan de entrenamientos</h2>
-          </div>
-          <div class="chips" role="list" aria-label="Filtros de entrenamientos">
-            <button class="chip chip--active" role="listitem">Todos</button>
-            <button class="chip" role="listitem">Fuerza</button>
-            <button class="chip" role="listitem">Cardio</button>
-            <button class="chip" role="listitem">Movilidad</button>
-          </div>
-        </header>
-
-        <div class="training__grid">
-          <article class="training__card">
-            <header class="training__card-header">
-              <div>
-                <p class="training__label">Nivel avanzado</p>
-                <h3>Power Lifting</h3>
-              </div>
-              <span class="pill pill--accent">Lu, Mi, Vi</span>
-            </header>
-            <p class="training__meta">Enfoque en fuerza máxima con seguimiento de cargas y técnica.</p>
-            <div class="training__details">
-              <div>
-                <p class="training__detail-label">Duración</p>
-                <p class="training__detail-value">75 min</p>
-              </div>
-              <div>
-                <p class="training__detail-label">Capacidad</p>
-                <p class="training__detail-value">18/22</p>
-              </div>
-              <div>
-                <p class="training__detail-label">Coach</p>
-                <p class="training__detail-value">Lucía M.</p>
-              </div>
-            </div>
-            <div class="progress progress--thin" aria-label="Progreso de ocupación">
-              <div class="progress__bar" style="width: 82%"></div>
-            </div>
-            <div class="training__footer">
-              <span class="pill">Quedan 4 cupos</span>
-              <button class="btn btn--ghost">Ver detalles</button>
-            </div>
-          </article>
-
-          <article class="training__card">
-            <header class="training__card-header">
-              <div>
-                <p class="training__label">Intermedio</p>
-                <h3>HIIT MetCon</h3>
-              </div>
-              <span class="pill pill--accent">Ma, Ju</span>
-            </header>
-            <p class="training__meta">Circuitos de alta intensidad con énfasis en resistencia y control cardiaco.</p>
-            <div class="training__details">
-              <div>
-                <p class="training__detail-label">Duración</p>
-                <p class="training__detail-value">50 min</p>
-              </div>
-              <div>
-                <p class="training__detail-label">Capacidad</p>
-                <p class="training__detail-value">12/16</p>
-              </div>
-              <div>
-                <p class="training__detail-label">Coach</p>
-                <p class="training__detail-value">Marco R.</p>
-              </div>
-            </div>
-            <div class="progress progress--thin" aria-label="Progreso de ocupación">
-              <div class="progress__bar progress__bar--secondary" style="width: 60%"></div>
-            </div>
-            <div class="training__footer">
-              <span class="pill">4 plazas disponibles</span>
-              <button class="btn btn--ghost">Inscribir</button>
-            </div>
-          </article>
-
-          <article class="training__card">
-            <header class="training__card-header">
-              <div>
-                <p class="training__label">Todos los niveles</p>
-                <h3>Movilidad & Core</h3>
-              </div>
-              <span class="pill pill--accent">Sábados</span>
-            </header>
-            <p class="training__meta">Sesión de movilidad articular, estabilidad y respiración consciente.</p>
-            <div class="training__details">
-              <div>
-                <p class="training__detail-label">Duración</p>
-                <p class="training__detail-value">40 min</p>
-              </div>
-              <div>
-                <p class="training__detail-label">Capacidad</p>
-                <p class="training__detail-value">10/14</p>
-              </div>
-              <div>
-                <p class="training__detail-label">Coach</p>
-                <p class="training__detail-value">Andrea P.</p>
-              </div>
-            </div>
-            <div class="progress progress--thin" aria-label="Progreso de ocupación">
-              <div class="progress__bar" style="width: 45%"></div>
-            </div>
-            <div class="training__footer">
-              <span class="pill">Espacios de sobra</span>
-              <button class="btn btn--ghost">Agregar a agenda</button>
-            </div>
-          </article>
-        </div>
-
-        <div class="training__schedule" aria-label="Próximas sesiones">
-          <h3>Próximas sesiones</h3>
-          <div class="schedule__list">
-            <div class="schedule__item">
-              <div>
-                <p class="schedule__title">Power Lifting</p>
-                <p class="schedule__meta">Hoy · 19:00 · Sala Principal</p>
-              </div>
-              <span class="pill">14 confirmados</span>
-            </div>
-            <div class="schedule__item">
-              <div>
-                <p class="schedule__title">HIIT MetCon</p>
-                <p class="schedule__meta">Mañana · 07:30 · Zona de cardio</p>
-              </div>
-              <span class="pill pill--accent">Recordar</span>
-            </div>
-            <div class="schedule__item">
-              <div>
-                <p class="schedule__title">Movilidad & Core</p>
-                <p class="schedule__meta">Sábado · 09:00 · Estudio 2</p>
-              </div>
-              <span class="pill">Abierto</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="clases" class="section" data-section="clases" aria-label="Clases">
-        <header class="section__header">
-          <div>
-            <p class="breadcrumb">Inicio / Clases</p>
-            <h2>Agenda de clases</h2>
-          </div>
-          <div class="chips" role="list" aria-label="Filtros de clases">
-            <button class="chip chip--active" role="listitem">Hoy</button>
-            <button class="chip" role="listitem">Semana</button>
-            <button class="chip" role="listitem">Virtuales</button>
-          </div>
-        </header>
-        <div class="section__grid">
-          <article class="panel panel--lifted">
-            <header class="panel__header">
-              <div>
-                <p class="training__label">07:30 · Zona cardio</p>
-                <h3>Cardio burn</h3>
-              </div>
-              <span class="pill pill--accent">12/18</span>
-            </header>
-            <p class="panel__meta">Intervalos progresivos con énfasis en respiración y control.</p>
-            <div class="progress progress--thin" aria-label="Ocupación de clase">
-              <div class="progress__bar" style="width: 64%"></div>
-            </div>
-            <div class="panel__footer">
-              <button class="btn btn--ghost">Ver plan</button>
-              <button class="btn">Reservar</button>
-            </div>
-          </article>
-
-          <article class="panel panel--lifted">
-            <header class="panel__header">
-              <div>
-                <p class="training__label">12:00 · Estudio 2</p>
-                <h3>Flow de movilidad</h3>
-              </div>
-              <span class="pill">Abierta</span>
-            </header>
-            <p class="panel__meta">Secuencias de movilidad y respiración para activar energía.</p>
-            <div class="progress progress--thin" aria-label="Ocupación de clase">
-              <div class="progress__bar progress__bar--secondary" style="width: 38%"></div>
-            </div>
-            <div class="panel__footer">
-              <button class="btn btn--ghost">Agregar a agenda</button>
-              <button class="btn">Unirme</button>
-            </div>
-          </article>
-
-          <article class="panel panel--lifted">
-            <header class="panel__header">
-              <div>
-                <p class="training__label">18:00 · Sala principal</p>
-                <h3>Funcional mixto</h3>
-              </div>
-              <span class="pill">Completa</span>
-            </header>
-            <p class="panel__meta">Circuito de fuerza y estabilidad con estaciones rotativas.</p>
-            <div class="progress progress--thin" aria-label="Ocupación de clase">
-              <div class="progress__bar" style="width: 95%"></div>
-            </div>
-            <div class="panel__footer">
-              <button class="btn btn--ghost">Ver lista</button>
-              <button class="btn" disabled>En espera</button>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section id="miembros" class="section section--two-cols" data-section="miembros" aria-label="Miembros">
-        <header class="section__header">
-          <div>
-            <p class="breadcrumb">Inicio / Miembros</p>
-            <h2>Miembros activos</h2>
-          </div>
-          <button class="btn btn--ghost">Ver todos</button>
-        </header>
-
-        <div class="section__grid section__grid--two">
-          <article class="panel">
-            <header class="panel__header">
-              <h3>Retención</h3>
-              <span class="pill">92%</span>
-            </header>
-            <p class="panel__meta">Miembros con asistencia de 2+ veces por semana.</p>
-            <div class="progress" aria-label="Retención semanal">
-              <div class="progress__bar progress__bar--secondary" style="width: 92%"></div>
-            </div>
-          </article>
-
-          <article class="panel">
-            <header class="panel__header">
-              <h3>Nuevos ingresos</h3>
-              <span class="pill pill--accent">+18 este mes</span>
-            </header>
-            <p class="panel__meta">Altas recientes con seguimiento personalizado.</p>
-            <div class="list">
-              <div class="list__item">
-                <div>
-                  <p class="list__title">Araceli R.</p>
-                  <p class="list__meta">HIIT · Semana 2</p>
-                </div>
-                <span class="pill">Activa</span>
-              </div>
-              <div class="list__item">
-                <div>
-                  <p class="list__title">Samuel V.</p>
-                  <p class="list__meta">Power Lifting · Semana 1</p>
-                </div>
-                <span class="pill pill--accent">Seguimiento</span>
-              </div>
-              <div class="list__item">
-                <div>
-                  <p class="list__title">Patricia M.</p>
-                  <p class="list__meta">Funcional · Semana 3</p>
-                </div>
-                <span class="pill">Activa</span>
-              </div>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section id="ajustes" class="section" data-section="ajustes" aria-label="Ajustes">
-        <header class="section__header">
-          <div>
-            <p class="breadcrumb">Inicio / Ajustes</p>
-            <h2>Preferencias rápidas</h2>
-          </div>
-          <button class="btn btn--ghost">Guardar cambios</button>
-        </header>
-
-        <div class="section__grid">
-          <article class="panel panel--lifted">
-            <header class="panel__header">
-              <h3>Notificaciones</h3>
-              <span class="pill">Activas</span>
-            </header>
-            <ul class="list list--plain">
-              <li class="list__item">
-                <div>
-                  <p class="list__title">Alertas de cupo</p>
-                  <p class="list__meta">Recibe avisos cuando queden menos de 5 espacios.</p>
-                </div>
-                <label class="switch">
-                  <input type="checkbox" checked>
-                  <span class="slider"></span>
-                </label>
-              </li>
-              <li class="list__item">
-                <div>
-                  <p class="list__title">Resumen semanal</p>
-                  <p class="list__meta">Estadísticas directas al correo los domingos.</p>
-                </div>
-                <label class="switch">
-                  <input type="checkbox" checked>
-                  <span class="slider"></span>
-                </label>
-              </li>
-              <li class="list__item">
-                <div>
-                  <p class="list__title">Recordatorios de pago</p>
-                  <p class="list__meta">Enviar 3 días antes del vencimiento.</p>
-                </div>
-                <label class="switch">
-                  <input type="checkbox">
-                  <span class="slider"></span>
-                </label>
-              </li>
-            </ul>
-          </article>
-
-          <article class="panel panel--lifted">
-            <header class="panel__header">
-              <h3>Preferencias de tema</h3>
-              <span class="pill pill--accent">Auto</span>
-            </header>
-            <div class="list list--plain">
-              <label class="list__item list__item--selectable">
-                <div>
-                  <p class="list__title">Modo oscuro</p>
-                  <p class="list__meta">Optimizado para uso nocturno.</p>
-                </div>
-                <input type="radio" name="theme" checked>
-              </label>
-              <label class="list__item list__item--selectable">
-                <div>
-                  <p class="list__title">Modo claro</p>
-                  <p class="list__meta">Ideal para ambientes bien iluminados.</p>
-                </div>
-                <input type="radio" name="theme">
-              </label>
-              <label class="list__item list__item--selectable">
-                <div>
-                  <p class="list__title">Automático</p>
-                  <p class="list__meta">Ajuste según hora y sistema.</p>
-                </div>
-                <input type="radio" name="theme">
-              </label>
-            </div>
-          </article>
-        </div>
-      </section>
-    </main>
+  <div class="contact-modal" id="contact-modal" aria-hidden="true">
+    <div class="contact-modal__content">
+      <button class="contact-modal__close" aria-label="Cerrar">×</button>
+      <h3>Contacta al vendedor</h3>
+      <p id="contact-info"></p>
+    </div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
