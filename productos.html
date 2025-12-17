@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos | Phasvy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="productos">
+  <header class="navbar">
+    <div class="logo">Phasvy</div>
+    <nav class="nav" aria-label="Navegación principal">
+      <a href="index.html">Inicio</a>
+      <a href="como-funciona.html">Cómo funciona</a>
+      <a href="productos.html" class="active">Explorar productos</a>
+      <a href="vendedores.html">Vendedores</a>
+      <a href="auth.html">Iniciar sesión</a>
+      <a class="btn btn--primary" href="auth.html#registro">Registrarse</a>
+    </nav>
+    <button class="menu-toggle" aria-label="Abrir menú">☰</button>
+  </header>
+
+  <main class="page">
+    <section class="page-hero">
+      <div>
+        <p class="pill">Catálogo completo</p>
+        <h1>Explora productos y contacta al vendedor</h1>
+        <p>Tarjetas con imagen, precio, descripción y avatar del vendedor. Filtra o navega libremente y abre un modal con los datos de contacto.</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="auth.html#registro">Publicar un producto</a>
+          <a class="btn btn--ghost" href="vendedores.html">Ver vendedores</a>
+        </div>
+      </div>
+      <div class="page-hero__card">
+        <h3>Filtros rápidos</h3>
+        <div class="chip-group">
+          <button class="chip active" data-filter="all">Todo</button>
+          <button class="chip" data-filter="saludable">Saludable</button>
+          <button class="chip" data-filter="postres">Postres</button>
+          <button class="chip" data-filter="rapida">Rápida</button>
+          <button class="chip" data-filter="vegano">Vegano</button>
+          <button class="chip" data-filter="bebidas">Bebidas</button>
+          <button class="chip" data-filter="gourmet">Gourmet</button>
+        </div>
+        <p class="hint">Los filtros son demostrativos y trabajan sobre los datos mock.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section__header">
+        <p class="pill">Productos</p>
+        <h2>Tarjetas con datos completos</h2>
+        <p>Imágenes responsivas, precio, descripción y CTA para contactar al vendedor.</p>
+      </div>
+      <div class="grid" id="product-grid" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>
+      <strong>Phasvy</strong>
+      <p>Marketplace local para conectar vendedores y clientes.</p>
+    </div>
+    <div class="footer__links">
+      <a href="index.html">Inicio</a>
+      <a href="como-funciona.html">Cómo funciona</a>
+      <a href="productos.html">Productos</a>
+      <a href="auth.html">Acceso</a>
+    </div>
+    <div class="footer__meta">© 2024 Phasvy · Políticas · Contacto</div>
+  </footer>
+
+  <div class="contact-modal" id="contact-modal" aria-hidden="true">
+    <div class="contact-modal__content">
+      <button class="contact-modal__close" aria-label="Cerrar">×</button>
+      <h3>Contacta al vendedor</h3>
+      <p id="contact-info"></p>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>

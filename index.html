@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phasvy | Mercado naranja</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="home">
+  <header class="navbar">
+    <div class="logo">Phasvy</div>
+    <nav class="nav" aria-label="Navegación principal">
+      <a href="index.html">Inicio</a>
+      <a href="como-funciona.html">Cómo funciona</a>
+      <a href="productos.html">Explorar productos</a>
+      <a href="vendedores.html">Vendedores</a>
+      <a href="auth.html">Iniciar sesión</a>
+      <a class="btn btn--primary" href="auth.html#registro">Registrarse</a>
+    </nav>
+    <button class="menu-toggle" aria-label="Abrir menú">☰</button>
+  </header>
+
+  <main id="inicio">
+    <section class="hero">
+      <div class="slider" aria-label="Destacados">
+        <div class="slide active" style="background-image:url('https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=1400&q=80')">
+          <div class="slide__overlay"></div>
+          <div class="slide__content">
+            <p class="pill">Mercado naranja</p>
+            <h1>Phasvy une sabores locales con gente curiosa</h1>
+            <p>Descubre productos de temporada y propuestas creativas sin salir de tu ciudad.</p>
+            <div class="hero__actions">
+              <a class="btn btn--primary" href="productos.html">Explorar productos</a>
+              <a class="btn btn--ghost" href="auth.html#registro">Sumarte como vendedor</a>
+            </div>
+          </div>
+        </div>
+        <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=1400&q=80')">
+          <div class="slide__overlay"></div>
+          <div class="slide__content">
+            <p class="pill">Rutas Phasvy</p>
+            <h1>Paneles que reaccionan a tu rol</h1>
+            <p>Admin vigila la comunidad, vendedores mueven su catálogo y clientes guardan sus hallazgos.</p>
+            <div class="hero__actions">
+              <a class="btn btn--primary" href="paneles.html">Ver paneles</a>
+              <a class="btn btn--ghost" href="como-funciona.html">Revisar flujo</a>
+            </div>
+          </div>
+        </div>
+        <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=1400&q=80')">
+          <div class="slide__overlay"></div>
+          <div class="slide__content">
+            <p class="pill">Confianza</p>
+            <h1>Accesos seguros, perfiles vivos</h1>
+            <p>JWT listo para producción y perfiles con datos verificables para contactar en segundos.</p>
+            <div class="hero__actions">
+              <a class="btn btn--primary" href="auth.html">Inicia sesión</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slider__dots" role="tablist"></div>
+    </section>
+
+    <section class="section">
+      <div class="section__header">
+        <p class="pill">Pulso Phasvy</p>
+        <h2>Una landing pensada para provocar acción</h2>
+        <p>En lugar de repetir lo de otras páginas, aquí encuentras historias rápidas, lanzamientos de temporada y rutas de contacto en un solo vistazo.</p>
+      </div>
+      <div class="grid cards--info">
+        <article class="card">
+          <div class="icon">🌶️</div>
+          <h3>Curaduría naranja</h3>
+          <p>Destacamos lanzamientos calientes y combos con ingredientes cercanos a ti.</p>
+          <a class="btn btn--ghost" href="productos.html">Ir al catálogo completo</a>
+        </article>
+        <article class="card">
+          <div class="icon">⚡</div>
+          <h3>Atajos por rol</h3>
+          <p>Paneles que cambian según seas admin, vendedor o cliente; sin vueltas.</p>
+          <a class="btn btn--ghost" href="paneles.html">Ver paneles</a>
+        </article>
+        <article class="card">
+          <div class="icon">📍</div>
+          <h3>Mapea a tu gente</h3>
+          <p>Perfiles públicos con foto, bio y contacto inmediato para que escribas sin fricción.</p>
+          <a class="btn btn--ghost" href="vendedores.html">Ver vendedores</a>
+        </article>
+        <article class="card">
+          <div class="icon">🧭</div>
+          <h3>Checklist express</h3>
+          <p>Regístrate, guarda un producto y prueba el modal de contacto en menos de un minuto.</p>
+          <a class="btn btn--ghost" href="auth.html#registro">Probar ahora</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section__header">
+        <p class="pill">Productos destacados</p>
+        <h2>Explora el marketplace</h2>
+        <p>Tarjetas con imagen, precio y vendedor. El botón de contacto revela los datos del vendedor.</p>
+      </div>
+      <div class="grid" id="product-grid" aria-live="polite"></div>
+      <div class="center-actions">
+        <a class="btn btn--primary" href="productos.html">Ver todos los productos</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section__header">
+        <p class="pill">Vendedores</p>
+        <h2>Perfiles públicos</h2>
+        <p>Visita el perfil de cada vendedor y conoce sus productos.</p>
+      </div>
+      <div class="grid" id="vendor-grid"></div>
+      <div class="center-actions">
+        <a class="btn" href="vendedores.html">Ir a la página de vendedores</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section__header">
+        <p class="pill">Escena local</p>
+        <h2>Lo que hace única a Phasvy</h2>
+        <p>Te damos lecturas rápidas de la comunidad para que sepas qué está pasando antes de abrir otra pestaña.</p>
+      </div>
+      <div class="grid cards--info">
+        <article class="card">
+          <h3>Relevos cada semana</h3>
+          <p>Rotamos destacados con base en lo que la comunidad guarda y comparte; no verás el mismo orden en otra página.</p>
+        </article>
+        <article class="card">
+          <h3>Historias cortas</h3>
+          <p>Pequeñas notas de contexto sobre cada seller: por qué empezó, qué inspira su menú o qué producto no debes perderte.</p>
+        </article>
+        <article class="card">
+          <h3>Modo contacto 1 clic</h3>
+          <p>El modal de contacto te entrega WhatsApp o correo al instante para saltar a la conversación sin formularios intermedios.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section chat-center" id="mensajes">
+      <div class="section__header">
+        <p class="pill">Conversaciones</p>
+        <h2>Chat y buzón de notificaciones</h2>
+        <p>Cliente y vendedor hablan en vivo desde la página. Las alertas también avisan de nuevos productos y mensajes.</p>
+      </div>
+      <div class="chat-center__grid">
+        <article class="card session-card">
+          <h3>Sesiones rápidas</h3>
+          <p id="session-status" class="muted">Sin sesión activa. Usa un demo para probar chat y notificaciones.</p>
+          <div class="chips-inline">
+            <button class="btn btn--primary" type="button" data-demo-login="cliente">Cliente demo</button>
+            <button class="btn" type="button" data-demo-login="vendedor">Vendedor demo</button>
+            <button class="btn btn--ghost" type="button" data-demo-login="admin">Admin demo</button>
+          </div>
+          <p class="hint">Credenciales reales se guardan en el backend con contraseña hasheada.</p>
+        </article>
+        <article class="card inbox-card">
+          <div class="card__header">
+            <h3>Buzón</h3>
+            <span class="badge" data-notification-badge></span>
+          </div>
+          <ul id="notification-list" class="notice-list" aria-live="polite"></ul>
+        </article>
+        <article class="card chat-card">
+          <div class="chat-card__columns">
+            <div class="chat-card__threads">
+              <div class="card__header">
+                <h4>Hilos</h4>
+              </div>
+              <div id="chat-threads" class="threads" role="list"></div>
+            </div>
+            <div class="chat-card__messages">
+              <div class="card__header">
+                <h4>Mensajes</h4>
+              </div>
+              <div id="chat-messages" class="bubbles" aria-live="polite"></div>
+              <form id="chat-form" class="chat-form">
+                <label class="sr-only" for="chat-text">Mensaje</label>
+                <textarea id="chat-text" placeholder="Escribe a tu vendedor o cliente..." required></textarea>
+                <button class="btn btn--primary" type="submit">Enviar</button>
+              </form>
+            </div>
+          </div>
+          <p class="hint">El chat usa la API /api/chat y marca notificaciones nuevas para el destinatario.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section panels">
+      <div class="section__header">
+        <p class="pill">Paneles por rol</p>
+        <h2>Experiencia personalizada</h2>
+        <p>Tras iniciar sesión, cada rol ve opciones específicas.</p>
+      </div>
+      <div class="panels__grid">
+        <article class="panel-card" id="admin">
+          <h3>Administrador</h3>
+          <ul>
+            <li>Ver lista de usuarios y roles.</li>
+            <li>Activar / desactivar vendedores o clientes.</li>
+            <li>Gestionar todos los productos publicados.</li>
+          </ul>
+          <span class="badge">Ruta: /api/users</span>
+          <a class="btn btn--ghost" href="paneles.html#admin">Abrir panel</a>
+        </article>
+        <article class="panel-card" id="vendedor">
+          <h3>Vendedor</h3>
+          <ul>
+            <li>Publicar, editar y eliminar sus productos.</li>
+            <li>Ver estadísticas rápidas de sus publicaciones.</li>
+            <li>Perfil público en /vendedor/:id con su catálogo.</li>
+          </ul>
+          <span class="badge">Ruta: /api/products</span>
+          <a class="btn btn--ghost" href="paneles.html#vendedor">Abrir panel</a>
+        </article>
+        <article class="panel-card" id="cliente">
+          <h3>Cliente</h3>
+          <ul>
+            <li>Editar su información básica y avatar.</li>
+            <li>Explorar productos y contactar vendedores.</li>
+            <li>Guardar favoritos o historial (simulado).</li>
+          </ul>
+          <span class="badge">Ruta: /api/clients/me</span>
+          <a class="btn btn--ghost" href="paneles.html#cliente">Abrir panel</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section auth">
+      <div class="auth__forms">
+        <div class="form-card" id="registro">
+          <h3>Registrarse</h3>
+          <form id="register-form">
+            <label>Nombre<input name="name" required></label>
+            <label>Email<input type="email" name="email" required></label>
+            <label>Contraseña<input type="password" name="password" required></label>
+            <label>Rol
+              <select name="role">
+                <option value="cliente">Cliente</option>
+                <option value="vendedor">Vendedor</option>
+              </select>
+            </label>
+            <label>Avatar (URL)<input name="avatar" placeholder="https://..."></label>
+            <label>Descripción<input name="bio" placeholder="¿Qué ofreces o qué buscas?"></label>
+            <button class="btn btn--primary" type="submit">Crear cuenta</button>
+            <p class="hint">Contraseñas hasheadas + JWT en el backend.</p>
+          </form>
+        </div>
+        <div class="form-card" id="login">
+          <h3>Iniciar sesión</h3>
+          <form id="login-form">
+            <label>Email<input type="email" name="email" required></label>
+            <label>Contraseña<input type="password" name="password" required></label>
+            <button class="btn" type="submit">Entrar</button>
+            <p class="hint">Admin demo: admin@demo.com / Admin123!</p>
+          </form>
+        </div>
+      </div>
+      <div class="auth__info">
+        <h3>Autenticación y redirección</h3>
+        <p>Al iniciar sesión, el backend devuelve un JWT con el rol. Úsalo en el front para redirigir:</p>
+        <ul>
+          <li><strong>admin</strong> ➜ panel administrativo.</li>
+          <li><strong>vendedor</strong> ➜ panel de productos.</li>
+          <li><strong>cliente</strong> ➜ página de inicio personalizada.</li>
+        </ul>
+        <p>Ejemplo de cabecera: <code>Authorization: Bearer &lt;token&gt;</code>.</p>
+        <a class="btn btn--primary" href="auth.html">Ir a la página de acceso</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>
+      <strong>Phasvy</strong>
+      <p>Marketplace local para conectar vendedores y clientes.</p>
+    </div>
+    <div class="footer__links">
+      <a href="index.html">Inicio</a>
+      <a href="como-funciona.html">Cómo funciona</a>
+      <a href="productos.html">Productos</a>
+      <a href="auth.html">Acceso</a>
+    </div>
+    <div class="footer__meta">© 2024 Phasvy · Políticas · Contacto</div>
+  </footer>
+
+  <div class="contact-modal" id="contact-modal" aria-hidden="true">
+    <div class="contact-modal__content">
+      <button class="contact-modal__close" aria-label="Cerrar">×</button>
+      <h3>Contacta al vendedor</h3>
+      <p id="contact-info"></p>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
