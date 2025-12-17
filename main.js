@@ -300,6 +300,18 @@ function closeModal() {
 // Formularios (demostrativo: imprime la respuesta del backend)
 const publicFetch = (path, options = {}) => fetch(`${API_BASE}${path}`, options);
 
+// Evita que res.json() reviente cuando el servidor responde vacío o con HTML de error
+async function safeJson(response) {
+  const text = await response.text();
+  if (!text) return {};
+  try {
+    return JSON.parse(text);
+  } catch (error) {
+    console.warn('Respuesta no JSON', text);
+    return { raw: text };
+  }
+}
+
 async function handleRegister(event) {
   event.preventDefault();
   try {
@@ -309,8 +321,8 @@ async function handleRegister(event) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     });
-    const json = await res.json();
-    if (!res.ok) throw new Error(json.message || 'No se pudo registrar');
+    const json = await safeJson(res);
+    if (!res.ok) throw new Error(json.message || 'No se pudo registrar (respuesta vacía)');
     session = { token: json.token, user: json.user };
     persistSession();
     updateSessionUI();
@@ -330,8 +342,8 @@ async function handleLogin(event) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     });
-    const json = await res.json();
-    if (!res.ok) throw new Error(json.message || 'Error de inicio de sesión');
+    const json = await safeJson(res);
+    if (!res.ok) throw new Error(json.message || 'Error de inicio de sesión (respuesta vacía)');
     alert(`Bienvenido ${json.user.name}. Rol: ${json.user.role}`);
     session = { token: json.token, user: json.user };
     persistSession();
@@ -358,7 +370,7 @@ async function loginDemo(role) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(demoCreds)
   });
-  const json = await res.json();
+  const json = await safeJson(res);
   if (res.ok) {
     session = { token: json.token, user: json.user };
     persistSession();
@@ -403,7 +415,7 @@ async function loadNotifications() {
   if (!notificationList || !session.token) return;
   try {
     const res = await authFetch('/api/notifications');
-    const data = await res.json();
+    const data = await safeJson(res);
     notificationList.innerHTML = data.items
       .map(
         (n) => `
@@ -429,7 +441,7 @@ async function loadThreads() {
   if (!chatThreads || !session.token) return;
   try {
     const res = await authFetch('/api/chat/threads');
-    const data = await res.json();
+    const data = await safeJson(res);
     chatThreads.innerHTML = data.threads
       .map(
         (t) => `
@@ -456,7 +468,7 @@ async function loadConversation(userId) {
   if (!chatMessages || !session.token) return;
   try {
     const res = await authFetch(`/api/chat/with/${userId}`);
-    const data = await res.json();
+    const data = await safeJson(res);
     activeChatWith = userId;
     chatMessages.innerHTML = data.messages
       .map(
