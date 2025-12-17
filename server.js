@@ -199,6 +199,17 @@ let messages = [
 ];
 let notifications = {};
 
+// Ruta de estado para verificar conexión desde el front
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    mode: 'memdb',
+    users: users.length,
+    products: products.length,
+    message: 'Si ves esto, el backend está corriendo. Ejecuta "npm start" en puerto 4000.'
+  });
+});
+
 const ensureInbox = (userId) => {
   if (!notifications[userId]) notifications[userId] = [];
 };

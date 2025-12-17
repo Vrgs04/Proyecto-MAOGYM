@@ -180,10 +180,17 @@ let activeChatWith = null;
 
 // Permite apuntar a otra API si el HTML se abre como archivo local o desde otro puerto
 // Usa window.__PHASVY_API__ para sobreescribir manualmente el endpoint
-const API_BASE =
-  window.__PHASVY_API__ ||
-  (window.location.protocol === 'file:' ? 'http://localhost:4000' : '') ||
-  '';
+// Si sirves el front desde Live Server (127.0.0.1:5500) y el backend corre en 4000, se usa el fallback.
+const API_FALLBACK = 'http://localhost:4000';
+const API_BASE = (() => {
+  if (window.__PHASVY_API__) return window.__PHASVY_API__;
+  if (window.location.protocol === 'file:') return API_FALLBACK;
+  if (window.location.port === '4000') return '';
+  // Puertos comunes de servidores estáticos locales (ej. 5500 de VS Code Live Server)
+  if (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') return API_FALLBACK;
+  return '';
+})();
+console.info('Phasvy API base:', API_BASE || '(mismo origen)');
 
 const sessionStatus = document.getElementById('session-status');
 const notificationList = document.getElementById('notification-list');
@@ -322,13 +329,19 @@ async function handleRegister(event) {
       body: JSON.stringify(data)
     });
     const json = await safeJson(res);
-    if (!res.ok) throw new Error(json.message || 'No se pudo registrar (respuesta vacía)');
+    if (!res.ok) {
+      const hint = ' Verifica que el backend esté ejecutándose con "npm start" en http://localhost:4000 o define window.__PHASVY_API__ con tu host.';
+      throw new Error((json.message || 'No se pudo registrar (respuesta vacía)') + hint);
+    }
     session = { token: json.token, user: json.user };
     persistSession();
     updateSessionUI();
     alert(`Cuenta creada. Hola ${json.user.name}`);
   } catch (error) {
-    alert(error.message || 'No se pudo registrar');
+    const hint = error.message?.includes('fetch')
+      ? '\nNo se pudo conectar con la API. Inicia el backend (npm start) o configura window.__PHASVY_API__ al host correcto.'
+      : '';
+    alert((error.message || 'No se pudo registrar') + hint);
     console.error('Registro', error);
   }
 }
@@ -343,7 +356,10 @@ async function handleLogin(event) {
       body: JSON.stringify(data)
     });
     const json = await safeJson(res);
-    if (!res.ok) throw new Error(json.message || 'Error de inicio de sesión (respuesta vacía)');
+    if (!res.ok) {
+      const hint = ' Verifica que el backend esté ejecutándose con "npm start" en http://localhost:4000 o define window.__PHASVY_API__ con tu host.';
+      throw new Error((json.message || 'Error de inicio de sesión (respuesta vacía)') + hint);
+    }
     alert(`Bienvenido ${json.user.name}. Rol: ${json.user.role}`);
     session = { token: json.token, user: json.user };
     persistSession();
@@ -351,7 +367,10 @@ async function handleLogin(event) {
     await loadNotifications();
     await loadThreads();
   } catch (error) {
-    alert(error.message || 'Error de inicio de sesión');
+    const hint = error.message?.includes('fetch')
+      ? '\nNo se pudo conectar con la API. Inicia el backend (npm start) o configura window.__PHASVY_API__ al host correcto.'
+      : '';
+    alert((error.message || 'Error de inicio de sesión') + hint);
     console.error('Login', error);
   }
 }
