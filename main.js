@@ -305,7 +305,221 @@ function closeModal() {
 }
 
 // Formularios (demostrativo: imprime la respuesta del backend)
-const publicFetch = (path, options = {}) => fetch(`${API_BASE}${path}`, options);
+let useMockApi = false;
+
+// Simulador local cuando la API real no responde (permite probar sin backend)
+const mockData = {
+  users: [
+    {
+      id: 'u1',
+      name: 'Admin Demo',
+      email: 'admin@demo.com',
+      role: 'admin',
+      password: 'Admin123!',
+      avatar:
+        'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=200&q=80',
+      bio: 'Gestiona el marketplace',
+      contact: 'admin@demo.com',
+      active: true
+    },
+    {
+      id: 'u2',
+      name: 'Laura Chef',
+      email: 'laura@demo.com',
+      role: 'vendedor',
+      password: 'Vendedor123!',
+      avatar:
+        'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=200&q=80',
+      bio: 'Comida casera saludable',
+      contact: '+57 300 111 2233',
+      active: true
+    },
+    {
+      id: 'u3',
+      name: 'Carlos Cliente',
+      email: 'carlos@demo.com',
+      role: 'cliente',
+      password: 'Cliente123!',
+      avatar:
+        'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
+      bio: 'Amante de la buena comida',
+      contact: 'carlos@example.com',
+      active: true
+    },
+    {
+      id: 'u4',
+      name: 'Huerta Verde',
+      email: 'huerta@demo.com',
+      role: 'vendedor',
+      password: 'Vendedor123!',
+      avatar:
+        'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80',
+      bio: 'Canastas orgánicas con cosecha local',
+      contact: '+57 311 444 5566',
+      active: true
+    }
+  ],
+  products: [],
+  messages: [
+    {
+      id: 'm1',
+      from: 'u3',
+      to: 'u2',
+      text: 'Hola Laura, me interesa el bowl de quinoa con pollo, ¿aún lo tienes disponible hoy?',
+      productId: 'p1',
+      date: new Date().toISOString(),
+      read: false
+    }
+  ],
+  notifications: {
+    u2: [
+      {
+        id: 'n1',
+        title: 'Producto destacado',
+        message: 'Tu bowl de quinoa tuvo 12 visitas hoy',
+        date: new Date().toISOString()
+      }
+    ],
+    u3: [
+      {
+        id: 'n2',
+        title: 'Nuevo producto',
+        message: 'Laura Chef publicó una hamburguesa artesanal',
+        date: new Date().toISOString()
+      }
+    ]
+  }
+};
+
+// Clona productos iniciales para el modo mock
+mockData.products = products.map((p, index) => ({
+  ...p,
+  id: p.id || `mp${index + 1}`
+}));
+
+const makeMockResponse = (data, ok = true, status = 200) => ({
+  ok,
+  status,
+  async json() {
+    return data;
+  },
+  async text() {
+    return JSON.stringify(data);
+  }
+});
+
+function mockFetch(path, options = {}) {
+  const { method = 'GET' } = options;
+  // Login
+  if (path === '/api/auth/login' && method === 'POST') {
+    try {
+      const payload = JSON.parse(options.body || '{}');
+      const user = mockData.users.find((u) => u.email === payload.email);
+      if (!user || user.password !== payload.password || !user.active) {
+        return makeMockResponse({ message: 'Credenciales inválidas (modo sin backend)' }, false, 401);
+      }
+      return makeMockResponse({ token: 'mock-token', user });
+    } catch (error) {
+      return makeMockResponse({ message: 'Error en credenciales mock' }, false, 400);
+    }
+  }
+
+  // Registro
+  if (path === '/api/auth/register' && method === 'POST') {
+    try {
+      const payload = JSON.parse(options.body || '{}');
+      if (!payload.email || !payload.password) {
+        return makeMockResponse({ message: 'Faltan campos' }, false, 400);
+      }
+      if (mockData.users.some((u) => u.email === payload.email)) {
+        return makeMockResponse({ message: 'El correo ya existe (mock)' }, false, 409);
+      }
+      const newUser = {
+        id: `mock-${Date.now()}`,
+        name: payload.name || payload.email,
+        email: payload.email,
+        role: payload.role || 'cliente',
+        password: payload.password,
+        avatar: payload.avatar || 'https://placehold.co/200x200',
+        bio: payload.bio || '',
+        contact: payload.contact || payload.email,
+        active: true
+      };
+      mockData.users.push(newUser);
+      return makeMockResponse({ token: 'mock-token', user: newUser }, true, 201);
+    } catch (error) {
+      return makeMockResponse({ message: 'No se pudo registrar (mock)' }, false, 400);
+    }
+  }
+
+  // Notificaciones
+  if (path === '/api/notifications' && method === 'GET') {
+    const list = mockData.notifications[session.user?.id] || [];
+    return makeMockResponse({ notifications: list });
+  }
+
+  // Hilos de chat
+  if (path === '/api/chat/threads' && method === 'GET') {
+    const myId = session.user?.id;
+    const partnerIds = new Set();
+    mockData.messages.forEach((m) => {
+      if (m.from === myId) partnerIds.add(m.to);
+      if (m.to === myId) partnerIds.add(m.from);
+    });
+    const threads = Array.from(partnerIds).map((pid) => {
+      const user = mockData.users.find((u) => u.id === pid);
+      return { userId: pid, userName: user?.name || 'Contacto', lastMessage: 'Conversación mock' };
+    });
+    return makeMockResponse({ threads });
+  }
+
+  // Mensajes con un usuario
+  if (path.startsWith('/api/chat/messages/') && method === 'GET') {
+    const otherId = path.split('/').pop();
+    const myId = session.user?.id;
+    const list = mockData.messages.filter(
+      (m) => (m.from === myId && m.to === otherId) || (m.to === myId && m.from === otherId)
+    );
+    return makeMockResponse({ messages: list });
+  }
+
+  if ((path === '/api/chat/messages' || path === '/api/chat/send') && method === 'POST') {
+    try {
+      const payload = JSON.parse(options.body || '{}');
+      const newMsg = {
+        id: `mock-msg-${Date.now()}`,
+        from: session.user?.id,
+        to: payload.to,
+        text: payload.text,
+        productId: payload.productId,
+        date: new Date().toISOString(),
+        read: false
+      };
+      mockData.messages.push(newMsg);
+      return makeMockResponse({ message: newMsg }, true, 201);
+    } catch (error) {
+      return makeMockResponse({ message: 'No se pudo enviar (mock)' }, false, 400);
+    }
+  }
+
+  // Salud y por defecto
+  if (path === '/api/health') {
+    return makeMockResponse({ ok: true, mode: 'mock' });
+  }
+
+  return makeMockResponse({ message: 'Ruta mock no implementada' }, false, 404);
+}
+
+const publicFetch = async (path, options = {}) => {
+  try {
+    if (useMockApi) throw new Error('mock-enabled');
+    return await fetch(`${API_BASE}${path}`, options);
+  } catch (error) {
+    useMockApi = true;
+    console.warn('Fallo la API real, usando modo mock local', error.message);
+    return mockFetch(path, options);
+  }
+};
 
 // Evita que res.json() reviente cuando el servidor responde vacío o con HTML de error
 async function safeJson(response) {
@@ -406,19 +620,26 @@ async function loginDemo(role) {
 
 const authFetch = async (url, options = {}) => {
   if (!session.token) return Promise.reject(new Error('Requiere sesión'));
-  const response = await fetch(`${API_BASE}${url}`, {
-    ...options,
-    headers: {
-      ...(options.headers || {}),
-      Authorization: `Bearer ${session.token}`
+  try {
+    if (useMockApi) throw new Error('mock-enabled');
+    const response = await fetch(`${API_BASE}${url}`, {
+      ...options,
+      headers: {
+        ...(options.headers || {}),
+        Authorization: `Bearer ${session.token}`
+      }
+    });
+    if (response.status === 401) {
+      session = { token: null, user: null };
+      persistSession();
+      updateSessionUI();
     }
-  });
-  if (response.status === 401) {
-    session = { token: null, user: null };
-    persistSession();
-    updateSessionUI();
+    return response;
+  } catch (error) {
+    useMockApi = true;
+    console.warn('Fallo fetch autenticado, usando mock', error.message);
+    return mockFetch(url, options);
   }
-  return response;
 };
 
 function updateSessionUI() {
@@ -435,22 +656,25 @@ async function loadNotifications() {
   try {
     const res = await authFetch('/api/notifications');
     const data = await safeJson(res);
-    notificationList.innerHTML = data.items
+    const list = data.items || data.notifications || [];
+    notificationList.innerHTML = list
       .map(
         (n) => `
           <li class="notice ${n.read ? 'is-read' : ''}">
             <div>
               <p class="notice__title">${n.title || n.type}</p>
-              <p class="notice__text">${n.content}</p>
+              <p class="notice__text">${n.content || n.message}</p>
             </div>
             <span class="notice__meta">${new Date(n.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
           </li>
         `
       )
       .join('');
-    const unread = data.items.filter((n) => !n.read).length;
+    const unread = list.filter((n) => !n.read).length;
     if (notificationBadge) notificationBadge.textContent = unread > 0 ? unread : '';
-    await authFetch('/api/notifications/read', { method: 'PATCH' });
+    if (!useMockApi) {
+      await authFetch('/api/notifications/read', { method: 'PATCH' });
+    }
   } catch (error) {
     console.error('No se pudieron cargar notificaciones', error);
   }
@@ -461,21 +685,24 @@ async function loadThreads() {
   try {
     const res = await authFetch('/api/chat/threads');
     const data = await safeJson(res);
-    chatThreads.innerHTML = data.threads
+    const threads = data.threads || [];
+    chatThreads.innerHTML = threads
       .map(
         (t) => `
-          <button class="thread ${activeChatWith === t.with.id ? 'active' : ''}" data-thread="${t.with.id}">
+          <button class="thread ${activeChatWith === (t.with?.id || t.userId) ? 'active' : ''}" data-thread="${t.with?.id || t.userId}">
             <div>
-              <strong>${t.with.name}</strong>
-              <p class="muted">${t.lastMessage.text.slice(0, 42)}${t.lastMessage.text.length > 42 ? '…' : ''}</p>
+              <strong>${t.with?.name || t.userName || 'Contacto'}</strong>
+              <p class="muted">${(t.lastMessage?.text || t.lastMessage || 'Conversación').slice(0, 42)}${
+            (t.lastMessage?.text || t.lastMessage || 'Conversación').length > 42 ? '…' : ''
+          }</p>
             </div>
             ${t.unread ? `<span class="badge badge--pill">${t.unread}</span>` : ''}
           </button>
         `
       )
       .join('');
-    if (!activeChatWith && data.threads.length) {
-      activeChatWith = data.threads[0].with.id;
+    if (!activeChatWith && threads.length) {
+      activeChatWith = threads[0].with?.id || threads[0].userId;
       await loadConversation(activeChatWith);
     }
   } catch (error) {
@@ -489,7 +716,8 @@ async function loadConversation(userId) {
     const res = await authFetch(`/api/chat/with/${userId}`);
     const data = await safeJson(res);
     activeChatWith = userId;
-    chatMessages.innerHTML = data.messages
+    const list = data.messages || [];
+    chatMessages.innerHTML = list
       .map(
         (m) => `
           <div class="bubble ${m.from === session.user.id ? 'me' : ''}">
